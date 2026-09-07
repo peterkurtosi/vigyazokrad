@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vigyázok Rád</title>
+<meta name="description" content="Eszközök, amik szólnak, ha baj van. Idős szülőknek, és a családnak, aki aggódik értük.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Vigyázok Rád">
+<meta property="og:description" content="Eszközök, amik szólnak, ha baj van. Idős szülőknek, és a családnak, aki aggódik értük.">
+<meta name="twitter:card" content="summary">
+
+<!-- A betűtípusok HELYBŐL jönnek (betuk/), nem a Google CDN-jéről: így az
+     oldal betöltése egyetlen adatot sem küld harmadik félnek. Ugyanaz a két
+     betű, mint a Segítség app oldalán — közös írás, hogy aki az egyiket
+     ismeri, felismerje a másikat is. -->
+<style>
+@font-face{font-family:'Archivo';font-style:normal;font-weight:500 700;font-display:swap;
+  src:url(betuk/archivo-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:500 700;font-display:swap;
+  src:url(betuk/archivo-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:400 600;font-display:swap;
+  src:url(betuk/public-sans-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:400 600;font-display:swap;
+  src:url(betuk/public-sans-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+
+/* ── A MÁRKA SZÍNEI ─────────────────────────────────────────────────
+   Lila + meleg homok. A világos paletta a bare :root-on áll, hogy a
+   „rendszer" beállításnál (ami semmit nem bélyegez a gyökérre) is
+   teljes legyen; a sötétet a média-lekérdezés csak FELÜLÍRJA.        */
+:root{
+  --lila:#4A298A;  --melylila:#3B2263;  --homok:#D9A566;
+  --papir:#FBF8F4; --halvany:#F0E6D8;   --tompa:#6B6155;
+  --szoveg:#2A2118; --keret:#E4DACB;    --lap:#FFFFFF;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --lila:#B79BEE;  --melylila:#E2DCEC; --homok:#E0B87E;
+    --papir:#191320; --halvany:#241B30;  --tompa:#A79DBA;
+    --szoveg:#F1EEF7; --keret:#332942;   --lap:#211829;
+  }
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--papir); color:var(--szoveg);
+  font-family:'Public Sans',ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  /* ⚠️ NAGY ALAPMÉRET. Ezt az oldalt idős szemek is olvassák. */
+  font-size:20px; line-height:1.65;
+  display:flex; flex-direction:column; align-items:center;
+  padding:clamp(24px,5vw,64px) 20px 56px;
+}
+.mag{width:100%; max-width:660px}
+
+/* ── fejléc ───────────────────────────────────────────────────── */
+header{text-align:center; margin-bottom:clamp(36px,7vw,60px)}
+.jel{width:112px;height:112px;display:block;margin:0 auto 22px}
+h1{
+  font-family:'Archivo',sans-serif; font-weight:700;
+  font-size:clamp(38px,9vw,58px); line-height:1.05; letter-spacing:-.02em;
+  color:var(--melylila); text-wrap:balance;
+}
+.mondat{
+  margin-top:18px; font-size:clamp(19px,4.2vw,23px); color:var(--tompa);
+  text-wrap:balance; max-width:30ch; margin-left:auto; margin-right:auto;
+}
+
+/* ── szakasz-címkék ───────────────────────────────────────────────
+   ⚠️ A címke SZÖVEGGEL mond állapotot, nem színnel. Színvakon és
+      fekete-fehér nyomtatásban is ugyanazt jelenti.               */
+.cimke{
+  font-family:'Archivo',sans-serif; font-weight:600; font-size:14px;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--tompa);
+  display:flex; align-items:center; gap:14px; margin:0 0 20px;
+}
+.cimke::after{content:"";flex:1;height:1px;background:var(--keret)}
+
+/* ── a kész termék ────────────────────────────────────────────── */
+.termek{
+  background:var(--lap); border:1px solid var(--keret); border-radius:18px;
+  padding:clamp(22px,5vw,30px); margin-bottom:clamp(40px,8vw,60px);
+}
+.termek h2{
+  font-family:'Archivo',sans-serif; font-weight:700; font-size:28px;
+  color:var(--melylila); margin-bottom:8px;
+}
+.termek p{color:var(--tompa); font-size:19px}
+.gomb{
+  display:inline-block; margin-top:20px; padding:15px 28px;
+  background:var(--lila); color:#fff; text-decoration:none; border-radius:12px;
+  font-family:'Archivo',sans-serif; font-weight:600; font-size:19px;
+  border:2px solid transparent;
+}
+.gomb:hover,.gomb:focus-visible{background:var(--melylila)}
+@media (prefers-color-scheme: dark){
+  .gomb{color:#241B30}
+  .gomb:hover,.gomb:focus-visible{background:var(--homok)}
+}
+:focus-visible{outline:3px solid var(--homok); outline-offset:3px}
+
+/* ── ami épül ─────────────────────────────────────────────────── */
+ul{list-style:none}
+li{
+  display:flex; gap:14px; align-items:flex-start;
+  padding:13px 0; border-bottom:1px solid var(--keret);
+}
+li:last-child{border-bottom:0}
+li b{font-family:'Archivo',sans-serif;font-weight:600;color:var(--szoveg)}
+li span{color:var(--tompa)}
+.pont{
+  flex:0 0 auto; width:9px; height:9px; border-radius:50%;
+  background:var(--homok); margin-top:13px;
+}
+.zaro{
+  margin-top:26px; padding:18px 20px; border-left:4px solid var(--homok);
+  background:var(--halvany); border-radius:0 12px 12px 0;
+  font-size:19px; color:var(--szoveg);
+}
+
+/* ── lábléc ───────────────────────────────────────────────────── */
+footer{
+  margin-top:clamp(44px,9vw,66px); padding-top:26px;
+  border-top:1px solid var(--keret); text-align:center;
+  font-size:17px; color:var(--tompa);
+}
+footer a{color:var(--lila)}
+</style>
+</head>
+<body>
+<main class="mag">
+
+  <header>
+    <!-- A jel: egy ív, ami föléhajlik, és egy pont alatta.
+         Véd, de nem zár körbe. -->
+    <svg class="jel" viewBox="0 0 100 100" role="img" aria-label="Vigyázok Rád">
+      <path d="M14 58A36 36 0 0 1 86 58" fill="none" stroke="var(--lila)"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="11"/>
+      <circle cx="50" cy="74" r="13" fill="var(--homok)"/>
+    </svg>
+    <h1>Vigyázok Rád</h1>
+    <p class="mondat">Eszközök, amik szólnak, ha baj van.</p>
+  </header>
+
+  <p class="cimke">Már használható</p>
+  <section class="termek">
+    <h2>Segítség</h2>
+    <p>
+      Ingyenes segélyhívó alkalmazás Androidra, nagy gombokkal. Egy koppintás:
+      a telefon megkeresi, hol vagy, és SMS-t küld a családnak.
+    </p>
+    <a class="gomb" href="https://peterkurtosi.github.io/segitseg/">Az app oldala</a>
+  </section>
+
+  <p class="cimke">Épül</p>
+  <ul>
+    <li><span class="pont"></span><span><b>Segítség konzol</b> — fali panel, hogy vészhelyzetben ne kelljen telefont keresni.</span></li>
+    <li><span class="pont"></span><span><b>Gyógyszeradagoló</b> — emlékeztet, és jelzi, ha kimaradt.</span></li>
+    <li><span class="pont"></span><span><b>Vizes palack</b> — figyelmeztet, ha rég ivott valaki.</span></li>
+    <li><span class="pont"></span><span><b>Elesés-érzékelő nyaklánc</b></span></li>
+    <li><span class="pont"></span><span><b>Otthoni érzékelők</b> — füst, gázszivárgás, szén-monoxid, kifolyó víz, kihűlő lakás.</span></li>
+  </ul>
+
+  <p class="zaro">
+    Mindegyik a <b>Segítség</b> appon vagy a <b>konzolon</b> keresztül riaszt —
+    nem kell külön alkalmazást tanulni hozzájuk.
+  </p>
+
+  <footer>
+    <p>Kürtösi Péter · <a href="mailto:peter.kurtosi@gmail.com">peter.kurtosi@gmail.com</a></p>
+  </footer>
+
+</main>
+</body>
+</html>
