@@ -37,6 +37,9 @@
   --lila:#4A298A;  --melylila:#3B2263;  --homok:#D9A566;
   --papir:#FBF8F4; --halvany:#F0E6D8;   --tompa:#6B6155;
   --szoveg:#2A2118; --keret:#E4DACB;    --lap:#FFFFFF;
+  /* ⚠️ NAGY ALAPMÉRET, és a látogató ÁLLÍTHATJA (A− A A+).
+     Ezt az oldalt idős szemek is olvassák. */
+  --alap:20px;
 }
 @media (prefers-color-scheme: dark){
   :root{
@@ -50,12 +53,45 @@ html{-webkit-text-size-adjust:100%}
 body{
   background:var(--papir); color:var(--szoveg);
   font-family:'Public Sans',ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
-  /* ⚠️ NAGY ALAPMÉRET. Ezt az oldalt idős szemek is olvassák. */
-  font-size:20px; line-height:1.65;
+  font-size:var(--alap); line-height:1.65;
   display:flex; flex-direction:column; align-items:center;
-  padding:clamp(24px,5vw,64px) 20px 56px;
+  padding:clamp(16px,3vw,32px) 20px 56px;
 }
 .mag{width:100%; max-width:660px}
+
+/* ── vezérlők: nyelv és betűméret ─────────────────────────────────
+   ⭐ A zászló mellett OTT MARAD a nyelv neve: a jelentést nem a szín
+      hordozza, csak a figyelmet vonzza. A kiválasztottat nem csak
+      szín jelöli: aláhúzás + félkövér is.                          */
+.vezerlok{
+  display:flex; justify-content:space-between; align-items:center;
+  gap:10px; flex-wrap:wrap; margin-bottom:clamp(28px,5vw,44px);
+}
+.nyelvek,.meret{
+  display:flex; border:1px solid var(--keret); border-radius:10px;
+  overflow:hidden; background:var(--lap);
+}
+.nyelvek button,.meret button{
+  font:inherit; font-size:16px; font-weight:500; padding:7px 12px;
+  border:0; border-right:1px solid var(--keret); background:transparent;
+  color:var(--tompa); cursor:pointer; display:flex; align-items:center; gap:8px;
+}
+.nyelvek button:last-child,.meret button:last-child{border-right:0}
+.nyelvek button:hover,.meret button:hover{color:var(--szoveg)}
+.nyelvek button[aria-pressed="true"],.meret button[aria-pressed="true"]{
+  color:var(--szoveg); font-weight:600; box-shadow:inset 0 -3px 0 var(--homok);
+}
+.meret button{font-family:'Archivo',sans-serif; min-width:44px; justify-content:center}
+/* A zászlók: megrajzolva, hogy minden gépen egyformák legyenek.
+   ⚠ A vékony keret kell: a magyar és a német zászló FEHÉR sávja
+   különben eltűnne a világos háttéren. */
+.zaszlo{
+  width:22px; height:15px; flex:none; border-radius:2.5px;
+  outline:1px solid color-mix(in srgb, var(--szoveg) 22%, transparent);
+  outline-offset:-1px; opacity:.55; transition:opacity .15s ease;
+}
+.nyelvek button:not([aria-pressed="true"]):hover .zaszlo{opacity:.85}
+.nyelvek button[aria-pressed="true"] .zaszlo{opacity:1}
 
 /* ── fejléc ───────────────────────────────────────────────────── */
 header{text-align:center; margin-bottom:clamp(36px,7vw,60px)}
@@ -66,7 +102,7 @@ h1{
   color:var(--melylila); text-wrap:balance;
 }
 .mondat{
-  margin-top:18px; font-size:clamp(19px,4.2vw,23px); color:var(--tompa);
+  margin-top:18px; font-size:1.1em; color:var(--tompa);
   text-wrap:balance; max-width:30ch; margin-left:auto; margin-right:auto;
 }
 
@@ -74,26 +110,27 @@ h1{
    ⚠️ A címke SZÖVEGGEL mond állapotot, nem színnel. Színvakon és
       fekete-fehér nyomtatásban is ugyanazt jelenti.               */
 .cimke{
-  font-family:'Archivo',sans-serif; font-weight:600; font-size:14px;
+  font-family:'Archivo',sans-serif; font-weight:600; font-size:.7em;
   letter-spacing:.16em; text-transform:uppercase; color:var(--tompa);
   display:flex; align-items:center; gap:14px; margin:0 0 20px;
 }
 .cimke::after{content:"";flex:1;height:1px;background:var(--keret)}
 
-/* ── a kész termék ────────────────────────────────────────────── */
+/* ── kártyák ──────────────────────────────────────────────────── */
 .termek{
   background:var(--lap); border:1px solid var(--keret); border-radius:18px;
   padding:clamp(22px,5vw,30px); margin-bottom:clamp(40px,8vw,60px);
 }
 .termek h2{
-  font-family:'Archivo',sans-serif; font-weight:700; font-size:28px;
+  font-family:'Archivo',sans-serif; font-weight:700; font-size:1.4em;
   color:var(--melylila); margin-bottom:8px;
 }
-.termek p{color:var(--tompa); font-size:19px}
+.termek p{color:var(--tompa); font-size:.95em}
+.termek p + p{margin-top:12px}
 .gomb{
   display:inline-block; margin-top:20px; padding:15px 28px;
   background:var(--lila); color:#fff; text-decoration:none; border-radius:12px;
-  font-family:'Archivo',sans-serif; font-weight:600; font-size:19px;
+  font-family:'Archivo',sans-serif; font-weight:600; font-size:.95em;
   border:2px solid transparent;
 }
 .gomb:hover,.gomb:focus-visible{background:var(--melylila)}
@@ -104,7 +141,7 @@ h1{
 :focus-visible{outline:3px solid var(--homok); outline-offset:3px}
 
 /* ── ami épül ─────────────────────────────────────────────────── */
-ul{list-style:none}
+ul{list-style:none; margin-bottom:clamp(40px,8vw,60px)}
 li{
   display:flex; gap:14px; align-items:flex-start;
   padding:13px 0; border-bottom:1px solid var(--keret);
@@ -114,25 +151,73 @@ li b{font-family:'Archivo',sans-serif;font-weight:600;color:var(--szoveg)}
 li span{color:var(--tompa)}
 .pont{
   flex:0 0 auto; width:9px; height:9px; border-radius:50%;
-  background:var(--homok); margin-top:13px;
+  background:var(--homok); margin-top:.65em;
 }
 .zaro{
   margin-top:26px; padding:18px 20px; border-left:4px solid var(--homok);
   background:var(--halvany); border-radius:0 12px 12px 0;
-  font-size:19px; color:var(--szoveg);
+  font-size:.95em; color:var(--szoveg);
 }
+/* ⚠ A záró mondat egy <li>, de NEM flex: különben a szavai flex-elemekként
+   szóródnának szét (2026-09-12-én a padon mérve). */
+li.zaro{display:block; margin-top:16px}
+.email{font-family:'Archivo',sans-serif; font-weight:600; color:var(--lila); text-decoration:none; overflow-wrap:anywhere}
+.email:hover,.email:focus-visible{text-decoration:underline}
 
 /* ── lábléc ───────────────────────────────────────────────────── */
 footer{
   margin-top:clamp(44px,9vw,66px); padding-top:26px;
   border-top:1px solid var(--keret); text-align:center;
-  font-size:17px; color:var(--tompa);
+  font-size:.85em; color:var(--tompa);
 }
 footer a{color:var(--lila)}
+footer p + p{margin-top:8px}
 </style>
 </head>
 <body>
 <main class="mag">
+
+  <!-- ⚠ MEGRAJZOLT zászlók, nem emoji: a Windows az emoji-zászlót nem
+       rajzolja ki, csak két betűt mutat helyette („HU"). Ugyanazok a
+       rajzok, mint a Segítség app oldalán. -->
+  <div class="vezerlok">
+    <div class="nyelvek" role="group" aria-label="Nyelv / Sprache / Language">
+      <button type="button" data-nyelv="hu" aria-pressed="true">
+        <svg class="zaszlo" viewBox="0 0 60 30" aria-hidden="true">
+          <rect width="60" height="10" fill="#CE2939"/>
+          <rect y="10" width="60" height="10" fill="#FFFFFF"/>
+          <rect y="20" width="60" height="10" fill="#477050"/>
+        </svg>
+        <span>Magyar</span>
+      </button>
+      <button type="button" data-nyelv="de" aria-pressed="false">
+        <svg class="zaszlo" viewBox="0 0 60 30" aria-hidden="true">
+          <rect width="60" height="10" fill="#000000"/>
+          <rect y="10" width="60" height="10" fill="#DD0000"/>
+          <rect y="20" width="60" height="10" fill="#FFCE00"/>
+        </svg>
+        <span>Deutsch</span>
+      </button>
+      <button type="button" data-nyelv="en" aria-pressed="false">
+        <svg class="zaszlo" viewBox="0 0 60 30" aria-hidden="true">
+          <clipPath id="uk-negyed">
+            <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/>
+          </clipPath>
+          <rect width="60" height="30" fill="#012169"/>
+          <path d="M0,0 L60,30 M60,0 L0,30" stroke="#FFFFFF" stroke-width="6"/>
+          <path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#uk-negyed)" stroke="#C8102E" stroke-width="4"/>
+          <path d="M30,0 v30 M0,15 h60" stroke="#FFFFFF" stroke-width="10"/>
+          <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/>
+        </svg>
+        <span>English</span>
+      </button>
+    </div>
+    <div class="meret" role="group" aria-label="Betűméret / Schriftgröße / Text size">
+      <button type="button" data-meret="0" aria-pressed="false" aria-label="kisebb betű">A−</button>
+      <button type="button" data-meret="1" aria-pressed="true" aria-label="alap betűméret">A</button>
+      <button type="button" data-meret="2" aria-pressed="false" aria-label="nagyobb betű">A+</button>
+    </div>
+  </div>
 
   <header>
     <!-- A jel: egy ív, ami föléhajlik, és egy pont alatta.
@@ -143,42 +228,177 @@ footer a{color:var(--lila)}
       <circle cx="50" cy="74" r="13" fill="var(--homok)"/>
     </svg>
     <h1>Vigyázok Rád</h1>
-    <p class="mondat">Eszközök, amik szólnak, ha baj van.</p>
+    <p class="mondat" data-t="mondat">Eszközök, amik szólnak, ha baj van.</p>
   </header>
 
-  <p class="cimke">Már használható</p>
+  <p class="cimke" data-t="cimke_kesz">Már használható</p>
   <section class="termek">
     <h2>Segítség</h2>
-    <p>
+    <p data-t="app_leiras">
       Ingyenes segélyhívó alkalmazás Androidra, nagy gombokkal. Egy koppintás:
       a telefon megkeresi, hol vagy, és SMS-t küld a családnak.
     </p>
-    <a class="gomb" href="https://peterkurtosi.github.io/segitseg/">Az app oldala</a>
+    <!-- ⭐ A gomb a KIVÁLASZTOTT NYELVVEL nyitja az app oldalát (?nyelv=…),
+         mert a két oldal két különböző domainen él, és a böngésző tárolója
+         nem lát át egyikből a másikba. -->
+    <a class="gomb" id="app-gomb" href="https://peterkurtosi.github.io/segitseg/?nyelv=hu" data-t="app_gomb">Az app oldala</a>
   </section>
 
-  <p class="cimke">Épül</p>
+  <p class="cimke" data-t="cimke_epul">Épül</p>
   <ul>
-    <li><span class="pont"></span><span><b>Segítség konzol</b> — fali panel, hogy vészhelyzetben ne kelljen telefont keresni.</span></li>
-    <li><span class="pont"></span><span><b>Gyógyszeradagoló</b> — emlékeztet, és jelzi, ha kimaradt.</span></li>
-    <li><span class="pont"></span><span><b>Vizes palack</b> — figyelmeztet, ha rég ivott valaki.</span></li>
-    <li><span class="pont"></span><span><b>Elesés-érzékelő nyaklánc</b></span></li>
-    <li><span class="pont"></span><span><b>Otthoni érzékelők</b> — füst, gázszivárgás, szén-monoxid, kifolyó víz, kihűlő lakás.</span></li>
+    <li><span class="pont"></span><span data-t="epul_1"><b>Segítség konzol</b> — fali panel, hogy vészhelyzetben ne kelljen telefont keresni.</span></li>
+    <li><span class="pont"></span><span data-t="epul_2"><b>Gyógyszeradagoló</b> — emlékeztet, és jelzi, ha kimaradt.</span></li>
+    <li><span class="pont"></span><span data-t="epul_3"><b>Vizes palack</b> — figyelmeztet, ha rég ivott valaki.</span></li>
+    <li><span class="pont"></span><span data-t="epul_4"><b>Elesés-érzékelő nyaklánc</b></span></li>
+    <li><span class="pont"></span><span data-t="epul_5"><b>Otthoni érzékelők</b> — füst, gázszivárgás, szén-monoxid, kifolyó víz, kihűlő lakás.</span></li>
+    <li class="zaro" data-t="zaro">
+      Mindegyik a <b>Segítség</b> appon vagy a <b>konzolon</b> keresztül riaszt —
+      nem kell külön alkalmazást tanulni hozzájuk.
+    </li>
   </ul>
 
-  <p class="zaro">
-    Mindegyik a <b>Segítség</b> appon vagy a <b>konzolon</b> keresztül riaszt —
-    nem kell külön alkalmazást tanulni hozzájuk.
-  </p>
+  <p class="cimke" data-t="cimke_partner">Partnereknek</p>
+  <section class="termek">
+    <h2 data-t="partner_cim">Egy teljes segélyhívó szolgáltatás</h2>
+    <p data-t="partner_1">
+      Konzol a lakásban, központi szerver, és diszpécser-program azoknak, akik a
+      képernyő előtt ülnek és intézkednek. Épül, és bemutatható lesz — élesben,
+      valódi otthonokkal.
+    </p>
+    <p data-t="partner_2">
+      Olyan üzemeltetőt keresünk, aki a kész rendszert a sajátjaként viszi
+      tovább. Ha ez érdekli, írjon:
+      <a class="email" href="mailto:info@vigyazokrad.hu">info@vigyazokrad.hu</a>
+    </p>
+  </section>
+
+  <p class="cimke" data-t="cimke_ki">Ki áll mögötte</p>
+  <section class="termek">
+    <p data-t="ki_1">
+      Kürtösi Péter, mérnök — több mint tizenöt éve tervez elektronikát, és írja
+      hozzá a szoftvert is. Az egész az édesanyjával kezdődött, aki 2026
+      májusában eltévedt, és nem tudta elmondani, hol van.
+    </p>
+    <p data-t="ki_2">
+      Amit itt lát, abból az egy kérdésből nőtt ki: mi kell ahhoz, hogy valaki
+      egyetlen mozdulattal segítséget kérhessen — akkor is, ha nincs nála a
+      telefonja, nincs rajta a szemüvege, és nem tud dönteni.
+    </p>
+  </section>
 
   <footer>
-    <!-- ⚠️ NINCS ITT E-MAIL CÍM, ÉS EZ SZÁNDÉKOS.
-         Egy publikus oldalon a `mailto:` a legkönnyebb célpont a begyűjtő
-         botoknak, és egy személyes cím egyszer kikerülve visszavonhatatlan.
-         Aki kapcsolatba akar lépni, a Segítség app oldalán megtalálja az utat.
-         Ha lesz saját, a domainhez tartozó cím, az jöhet ide - személyes nem. -->
-    <p>Kürtösi Péter</p>
+    <!-- Ez a domainhez tartozó cím, nem személyes — ezért állhat itt.
+         (A személyes cím 2026-09-07-én szándékosan lekerült.) -->
+    <p><span data-t="kapcsolat">Kapcsolat:</span>
+       <a class="email" href="mailto:info@vigyazokrad.hu">info@vigyazokrad.hu</a></p>
+    <p>Kürtösi Péter · Vigyázok Rád</p>
   </footer>
 
 </main>
+
+<script>
+/* ── SZÖVEGEK — három nyelven ─────────────────────────────────────
+   A magyar a HTML-ben áll: JavaScript nélkül is az olvasható.
+   A német és az angol innen íródik a data-t jelű elemekbe.        */
+var SZOVEG = {
+  hu: null,  /* a HTML-ből olvassuk ki induláskor */
+  de: {
+    mondat: 'Geräte, die sich melden, wenn etwas nicht stimmt.',
+    cimke_kesz: 'Schon verfügbar',
+    app_leiras: 'Kostenlose Notruf-App für Android mit großen Tasten. Ein Tippen: Das Telefon stellt fest, wo du bist, und schickt der Familie eine SMS.',
+    app_gomb: 'Zur App-Seite',
+    cimke_epul: 'Im Aufbau',
+    epul_1: '<b>Hilfe-Konsole</b> — ein Wandpanel, damit im Notfall niemand ein Telefon suchen muss.',
+    epul_2: '<b>Medikamentenspender</b> — erinnert, und meldet, wenn eine Dosis ausgelassen wurde.',
+    epul_3: '<b>Wasserflasche</b> — warnt, wenn jemand lange nichts getrunken hat.',
+    epul_4: '<b>Anhänger mit Sturzerkennung</b>',
+    epul_5: '<b>Sensoren fürs Zuhause</b> — Rauch, Gasleck, Kohlenmonoxid, austretendes Wasser, eine auskühlende Wohnung.',
+    zaro: 'Alle melden sich über die <b>Segítség</b>-App oder die <b>Konsole</b> — keine weitere App, die man lernen müsste.',
+    cimke_partner: 'Für Partner',
+    partner_cim: 'Ein kompletter Notrufdienst',
+    partner_1: 'Eine Konsole in der Wohnung, ein zentraler Server und eine Leitstellen-Software für die Menschen, die am Bildschirm sitzen und handeln. Er entsteht gerade und wird vorführbar sein — im Echtbetrieb, mit echten Haushalten.',
+    partner_2: 'Wir suchen einen Betreiber, der das fertige System als sein eigenes weiterführt. Wenn das interessant klingt, schreiben Sie uns: <a class="email" href="mailto:info@vigyazokrad.hu">info@vigyazokrad.hu</a>',
+    cimke_ki: 'Wer dahintersteht',
+    ki_1: 'Péter Kürtösi, Ingenieur — entwirft seit über fünfzehn Jahren Elektronik und schreibt auch die Software dazu. Angefangen hat alles mit seiner Mutter, die sich im Mai 2026 verlaufen hat und nicht sagen konnte, wo sie war.',
+    ki_2: 'Alles, was Sie hier sehen, ist aus dieser einen Frage gewachsen: Was braucht es, damit jemand mit einem einzigen Handgriff Hilfe rufen kann — auch ohne Telefon in der Hand, ohne Brille, und ohne etwas entscheiden zu müssen?',
+    kapcsolat: 'Kontakt:'
+  },
+  en: {
+    mondat: 'Devices that speak up when something is wrong.',
+    cimke_kesz: 'Available now',
+    app_leiras: 'A free emergency-call app for Android with big buttons. One tap: the phone works out where you are and texts your family.',
+    app_gomb: 'The app’s page',
+    cimke_epul: 'In the making',
+    epul_1: '<b>Help console</b> — a wall panel, so that in an emergency nobody has to look for a phone.',
+    epul_2: '<b>Pill dispenser</b> — reminds, and reports when a dose was missed.',
+    epul_3: '<b>Water bottle</b> — warns when someone has not had a drink for a long time.',
+    epul_4: '<b>Fall-detecting pendant</b>',
+    epul_5: '<b>Home sensors</b> — smoke, gas leak, carbon monoxide, water leak, a home going cold.',
+    zaro: 'All of them raise the alarm through the <b>Segítség</b> app or the <b>console</b> — there is no separate app to learn.',
+    cimke_partner: 'For partners',
+    partner_cim: 'A complete alarm service',
+    partner_1: 'A console in the home, a central server, and dispatcher software for the people who sit at the screen and act. It is being built, and it will be demonstrable — live, with real homes.',
+    partner_2: 'We are looking for an operator to take the finished system and run it as their own. If that sounds interesting, write to us: <a class="email" href="mailto:info@vigyazokrad.hu">info@vigyazokrad.hu</a>',
+    cimke_ki: 'Who is behind it',
+    ki_1: 'Peter Kurtosi, engineer — designing electronics and writing the software behind it for more than fifteen years. It all started with his mother, who got lost in May 2026 and could not say where she was.',
+    ki_2: 'Everything you see here grew out of that one question: what does it take for someone to call for help with a single movement — even without the phone in hand, without glasses on, and without having to decide anything?',
+    kapcsolat: 'Contact:'
+  }
+};
+var MERETEK = ['18px', '20px', '23px'];
+var APP_OLDAL = 'https://peterkurtosi.github.io/segitseg/';
+
+function biztosTarolas(fn, alap) {
+  /* A tároló privát ablakban vagy tiltott sütiknél DOBHAT — az oldal
+     akkor is működjön, csak nem emlékszik. */
+  try { return fn(); } catch (e) { return alap; }
+}
+
+/* A magyar szöveget a HTML-ből olvassuk ki egyszer, induláskor. */
+SZOVEG.hu = {};
+document.querySelectorAll('[data-t]').forEach(function (el) {
+  SZOVEG.hu[el.dataset.t] = el.innerHTML;
+});
+
+function nyelvetAllit(kod) {
+  var sz = SZOVEG[kod];
+  if (!sz) return;
+  document.documentElement.lang = kod;
+  document.querySelectorAll('[data-t]').forEach(function (el) {
+    var ertek = sz[el.dataset.t];
+    if (typeof ertek === 'string') el.innerHTML = ertek;
+  });
+  document.getElementById('app-gomb').href = APP_OLDAL + '?nyelv=' + kod;
+  document.querySelectorAll('.nyelvek button').forEach(function (b) {
+    b.setAttribute('aria-pressed', String(b.dataset.nyelv === kod));
+  });
+  biztosTarolas(function () { return localStorage.setItem('vigyazokrad-nyelv', kod); });
+}
+
+function meretetAllit(index) {
+  document.documentElement.style.setProperty('--alap', MERETEK[index]);
+  document.querySelectorAll('.meret button').forEach(function (b) {
+    b.setAttribute('aria-pressed', String(Number(b.dataset.meret) === index));
+  });
+  biztosTarolas(function () { return localStorage.setItem('vigyazokrad-meret', String(index)); });
+}
+
+document.querySelectorAll('.nyelvek button').forEach(function (b) {
+  b.addEventListener('click', function () { nyelvetAllit(b.dataset.nyelv); });
+});
+document.querySelectorAll('.meret button').forEach(function (b) {
+  b.addEventListener('click', function () { meretetAllit(Number(b.dataset.meret)); });
+});
+
+/* ⭐ Induló nyelv: MAGYAR — függetlenül a böngésző nyelvétől (Peter döntése,
+   ugyanúgy, mint az app oldalán). Sorrend: a címben kapott ?nyelv=…, aztán
+   amit a látogató legutóbb választott, aztán a magyar. */
+var urlNyelv = new URLSearchParams(location.search).get('nyelv');
+var mentettNyelv = biztosTarolas(function () { return localStorage.getItem('vigyazokrad-nyelv'); }, null);
+nyelvetAllit(SZOVEG[urlNyelv] ? urlNyelv : (SZOVEG[mentettNyelv] ? mentettNyelv : 'hu'));
+
+var mentettMeret = biztosTarolas(function () { return localStorage.getItem('vigyazokrad-meret'); }, null);
+meretetAllit(mentettMeret !== null && MERETEK[Number(mentettMeret)] ? Number(mentettMeret) : 1);
+</script>
 </body>
 </html>
