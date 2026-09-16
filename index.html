@@ -32,10 +32,16 @@
      betű, mint a Segítség app oldalán — közös írás, hogy aki az egyiket
      ismeri, felismerje a másikat is.
 
-     ⚠ EGY KÉRÉS MÉGIS ELMEGY, és ezt itt is kimondjuk, hogy a fenti mondat
-       pontos maradjon: a lap alján egy látogatás-számláló egyetlen szót küld
-       (a nyelvet) Peter SAJÁT szerverére. Nem harmadik fél, nincs süti, nincs
-       IP-tárolás. A részletek annál a kódnál, a fájl végén. -->
+     ⚠ 2026-09-16-ig ez alól VOLT egy kivétel: a lap alján egy
+       látogatás-számláló elküldte a nyelvet Peter saját szerverére. Aznap
+       levettük. Nem azért, mert rossz volt — hanem mert az adatvédelmi
+       nyilatkozatunk 9. szakasza azt mondja, hogy ezen az oldalon **nincs
+       látogatottsági statisztika**, és a lap aljára most kikerül a rá
+       mutató link. Egy link egy olyan mondatra, amit ugyanaz az oldal
+       cáfol, rosszabb, mint ha link sem volna.
+
+       Így ez az oldal MOST már kivétel nélkül igaz: a betöltése egyetlen
+       kérést sem küld sehova a kiszolgálóján kívül. -->
 <style>
 @font-face{font-family:'Archivo';font-style:normal;font-weight:500 700;font-display:swap;
   src:url(betuk/archivo-latin-ext.woff2) format('woff2');
@@ -492,6 +498,29 @@ footer p + p{margin-top:8px}
          (A személyes cím 2026-09-07-én szándékosan lekerült.) -->
     <p><span data-t="kapcsolat">Kapcsolat:</span>
        <a class="email" href="mailto:info@vigyazokrad.hu">info@vigyazokrad.hu</a></p>
+    <!-- ⚠ A NYILATKOZAT A SEGÍTSÉG OLDALÁN ÁLL, és a 9. szakasza szó szerint
+         leírja ezt az oldalt is (mérve 2026-09-16-án): a böngésző megjegyzi a
+         nyelvet és a betűméretet, a GitHub Pages szolgálja ki és naplózza a
+         látogatók IP-jét, a betűk helyből jönnek — és nincs süti, nincs
+         látogatottsági statisztika, nincs nyomkövetés, nincs űrlap.
+
+         ⚠ EZÉRT KERÜLT LE A SZÁMLÁLÓ UGYANEBBEN A VÁLTOZÁSBAN. A link és a
+           számláló együtt nem állhatott meg: a link mögötti mondat cáfolta
+           volna a saját oldalunkat.
+
+         ⚠ AMI MÉG NYITOTT: a nyilatkozat hatálya a Segítség oldalára szól,
+           a vigyazokrad.hu nevét nem mondja ki. Amíg ez nem bővül, a link
+           egy olyan lapra mutat, amelyik nem állítja magáról, hogy IDE is
+           vonatkozik. -->
+    <!-- ⚠ HORGONY, NEM `?nyelv=`. Megmérve 2026-09-16-án a böngészőben: a
+         nyilatkozat lapja a `nyelv` paraméterre SEMMIT nem csinál — nincs
+         rajta szkript, ami figyelné —, a három nyelv EGYMÁS ALATT áll, és a
+         saját nyelvválasztója `#hu`, `#de`, `#en` horgonyokra mutat.
+         Egy `?nyelv=de` link tehát a magyar fejlécű lap TETEJÉRE vitte volna
+         a német olvasót: a cím változott volna, a képernyő nem. -->
+    <p><a id="adatvedelem-link"
+          href="https://peterkurtosi.github.io/segitseg/adatvedelem.html#hu"
+          data-t="adatvedelem">Adatvédelem</a></p>
     <p>Kürtösi Péter · Vigyázok Rád</p>
   </footer>
 
@@ -545,7 +574,8 @@ var SZOVEG = {
       '</div></div>'+
       '<a class="gomb szeles" href="prospektus/vigyazokrad-prospektus-de.pdf" download>'+
       'Prospekt herunterladen — PDF, 418 kB, 2 Seiten</a>',
-    kapcsolat: 'Kontakt:'
+    kapcsolat: 'Kontakt:',
+    adatvedelem: 'Datenschutz'
   },
   en: {
     mondat: 'Devices that speak up when something is wrong.',
@@ -589,11 +619,19 @@ var SZOVEG = {
       '</div></div>'+
       '<a class="gomb szeles" href="prospektus/vigyazokrad-prospektus-en.pdf" download>'+
       'Download the brochure — PDF, 384 kB, 2 pages</a>',
-    kapcsolat: 'Contact:'
+    kapcsolat: 'Contact:',
+    adatvedelem: 'Privacy'
   }
 };
 var MERETEK = ['18px', '20px', '23px'];
 var APP_OLDAL = 'https://peterkurtosi.github.io/segitseg/';
+/* ⚠ A nyilatkozat HÁROM nyelven áll, egymás alatt, EGY lapon — és NEM a
+   `nyelv` paraméterrel vált, hanem `#hu` / `#de` / `#en` horgonnyal. Ezt
+   2026-09-16-án a böngészőben mértük meg: a paraméter megérkezik, de a
+   lapon nincs szkript, ami figyelné. Ezért itt HORGONY áll, nem paraméter -
+   így a német olvasó tényleg a német szakaszra érkezik, nem csak a címe
+   lesz német. (Az app-gomb marad `?nyelv=`: az egy másik lap.) */
+var ADATVEDELEM = 'https://peterkurtosi.github.io/segitseg/adatvedelem.html';
 
 function biztosTarolas(fn, alap) {
   /* A tároló privát ablakban vagy tiltott sütiknél DOBHAT — az oldal
@@ -616,6 +654,7 @@ function nyelvetAllit(kod) {
     if (typeof ertek === 'string') el.innerHTML = ertek;
   });
   document.getElementById('app-gomb').href = APP_OLDAL + '?nyelv=' + kod;
+  document.getElementById('adatvedelem-link').href = ADATVEDELEM + '#' + kod;
   document.querySelectorAll('.nyelvek button').forEach(function (b) {
     b.setAttribute('aria-pressed', String(b.dataset.nyelv === kod));
   });
@@ -647,43 +686,6 @@ nyelvetAllit(SZOVEG[urlNyelv] ? urlNyelv : (SZOVEG[mentettNyelv] ? mentettNyelv 
 var mentettMeret = biztosTarolas(function () { return localStorage.getItem('vigyazokrad-meret'); }, null);
 meretetAllit(mentettMeret !== null && MERETEK[Number(mentettMeret)] ? Number(mentettMeret) : 1);
 
-/* ── LÁTOGATÁS-SZÁMLÁLÓ ────────────────────────────────────────────
-   Peter és én tudni szeretnénk, hányan jártak itt és milyen nyelven.
-   A látogatónak ebből SEMMI nem látszik, és a lap sem lesz tőle lassabb.
-
-   ⚠ AMIT ELKÜLD: EGY szó — 'hu', 'de' vagy 'en'. Semmi mást.
-   ⚠ AHOVÁ KÜLDI: Peter SAJÁT szerverére. Nincs harmadik fél, nincs
-     Google, nincs analitikai szolgáltató — ezért marad igaz az, hogy
-     ez az oldal senki idegennek nem ad adatot rólad.
-   ⚠ AMIT NEM CSINÁL: nincs süti, nincs localStorage, nincs IP-tárolás
-     a szerveren sem. A `sessionStorage` jelző a fül bezárásával
-     elmúlik — tehát még ezen a gépen sem marad nyoma.
-
-   ⚠ ÉS AMIT A SZÁM JELENT: egy böngésző-munkamenet, NEM egy ember.
-     Aki holnap visszajön, az két látogatás.
-
-   A `keepalive` azért kell, hogy a kérés akkor is elmenjen, ha a
-   látogató rögtön továbblép. A hiba SZÁNDÉKOSAN néma: egy számláló
-   soha nem ronthatja el az oldalt. */
-(function () {
-  var CIM = 'https://climatecloud-web.duckdns.org/vr/hit';
-  try {
-    if (sessionStorage.getItem('vr-szamolva')) { return; }
-    sessionStorage.setItem('vr-szamolva', '1');
-  } catch (e) { /* privát ablak: nem baj, akkor munkamenetenként egyszer */ }
-  /* ⚠ 'text/plain', NEM 'application/json' — és ez nem szőrszálhasogatás:
-     a JSON tartalomtípus miatt a böngésző ELŐZETES (OPTIONS) kérést küld,
-     vagyis minden látogató KÉT kérést tenne egy helyett. A 'text/plain'
-     egyszerű kérésnek számít, előzetes kérés nélkül. A szerver a törzset
-     így is JSON-ként olvassa. */
-  try {
-    fetch(CIM, {
-      method: 'POST', keepalive: true, mode: 'cors', credentials: 'omit',
-      headers: { 'content-type': 'text/plain' },
-      body: JSON.stringify({ lang: document.documentElement.lang || 'hu' })
-    }).catch(function () {});
-  } catch (e) { /* néma */ }
-})();
 </script>
 </body>
 </html>
