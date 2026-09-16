@@ -127,6 +127,19 @@ h1{
 }
 .termek p{color:var(--tompa); font-size:.95em}
 .termek p + p{margin-top:12px}
+/* Kép és film a szakaszon belül. A méret 100%, mert a két fotó 760, illetve
+   630 pont széles, a tartalomsáv viszont 660 — enélkül kilógna.
+   ⚠ A width/height ATTRIBÚTUM is rajta van a képeken: így a böngésző már a
+     letöltés előtt tudja az arányt, és nem ugrik meg alatta a szöveg. Aki
+     nagyítóval vagy képernyőolvasóval olvas, annak egy megugró oldal nem
+     kellemetlenség, hanem elveszett hely. */
+.termek figure{margin-top:20px}
+.termek figure + figure{margin-top:16px}
+.termek img,.termek video{
+  display:block; width:100%; height:auto;
+  border:1px solid var(--keret); border-radius:12px; background:#000;
+}
+.termek figcaption{color:var(--tompa); font-size:.85em; margin-top:8px}
 .gomb{
   display:inline-block; margin-top:20px; padding:15px 28px;
   background:var(--lila); color:#fff; text-decoration:none; border-radius:12px;
@@ -257,6 +270,104 @@ footer p + p{margin-top:8px}
     </li>
   </ul>
 
+  <!-- ⭐ A GYÓGYSZERADAGOLÓ KÖZELEBBRŐL — 2026-09-16.
+       Nem termékleírás: EGY gondolat, ami megkülönbözteti a többi emlékeztetőtől.
+       Rövid bekezdések, mindegyik egyetlen állítás — képernyőolvasóval így
+       követhető a legjobban. A saját h2-je a dokumentum-vázlatba is beviszi,
+       tehát fejlécről fejlécre ugrálva megtalálható. -->
+  <p class="cimke" data-t="cimke_gyogyszer">Közelebbről</p>
+  <section class="termek">
+    <h2 data-t="gy_cim">A gyógyszeradagolóról</h2>
+    <p data-t="gy_1">
+      Most készül az elektronikája — és nem emlékeztetőnek. Nem az a veszélyes,
+      ha valaki elfelejti bevenni a gyógyszerét, hanem az, ha
+      <b>úgy emlékszik, hogy bevette</b>. Az emlék megvan, csak éppen hamis —
+      és ez ellen egy emlékeztető tehetetlen.
+    </p>
+    <p data-t="gy_2">
+      Ezért ez a készülék nem kérdez rá, és nem hiszi el a választ.
+      <b>Két, egymástól független szinten</b> igazolja vissza, hogy az adag
+      valóban elhagyta a rekeszt. Amíg ez a visszaigazolás nincs meg, nem hagyja
+      annyiban.
+    </p>
+    <p data-t="gy_3">
+      Ha a jelzést sokáig figyelmen kívül hagyják, és a kapszulák még mindig a
+      rekeszben vannak, értesítés megy a hozzátartozónak vagy a gondozónak — a
+      <b>Segítség</b> appon vagy a <b>konzolon</b>. Valakinek, aki fel tudja
+      venni a telefont, és rákérdez.
+    </p>
+    <p data-t="gy_4">
+      Akiknek a legnagyobb szükségük van erre, azok látnak sokszor a legkevesebbet.
+      Ezért: nagy betű, valódi kontraszt, tapintható gomb — és a szín soha nem az
+      egyetlen jelzés. Ez az oldal is ezek szerint készült: a betűméret fent
+      állítható, és nyelvváltáskor a képernyőolvasó is a megfelelő nyelvre vált.
+    </p>
+  </section>
+
+  <!-- ⭐ A FALI KONZOL KÖZELEBBRŐL — 2026-09-16.
+       Minden szám a 2026-09-13-i mérésből (07-EVIDENCE/M7): két igazi panel,
+       egy otthoni háló, gombnyomástól a „Jövök!"-ig 10 másodperc.
+
+       ⚠ A KÉPEK EGÉSZ <figure>-JE data-t alatt áll, nem csak a képaláírás.
+         Azért, mert a fordító az innerHTML-t cseréli, az `alt` viszont
+         ATTRIBÚTUM — ha a <figure> nem lenne benne, egy német vak látogató
+         MAGYARUL hallaná a képleírást. Így a kép neve is fordul.
+         Ennek az ára: a fájlnév három helyen szerepel (HTML, de, en). Ha
+         változik, mind a hármat át kell írni. -->
+  <section class="termek">
+    <h2 data-t="k_cim">A fali konzolról</h2>
+    <p data-t="k_1">
+      Vészhelyzetben senki ne telefont keressen. A konzol a falon van, ott, ahol
+      az ember amúgy is kapcsolót keres: egy nagy, piros <b>SEGÍTSÉG</b> gomb, és
+      mellette két csempe — „Jól vagyok" és a villany.
+    </p>
+    <p data-t="k_2">
+      De egy riasztás önmagában kevés. Aki megnyomta a gombot, azt is meg kell
+      tudja, hogy <b>jön valaki</b>. Ezért a ház konzoljai szólnak egymásnak: a
+      másik szobában megjelenik, hogy „SEGÍTSÉG — Betegszoba", és aki ott van,
+      egyetlen gombbal válaszol: <b>„Jövök!"</b> — ez pedig ott jelenik meg annál,
+      aki hívott.
+    </p>
+    <p data-t="k_3">
+      Két igazi panellal, egy otthoni hálón mérve: a gombnyomástól a „Jövök!"
+      válaszig <b>tíz másodperc</b>. A konzolok maguktól megtalálják egymást a
+      hálózaton — nincs beállítás, nincs felhő, nincs előfizetés.
+    </p>
+    <p data-t="k_4">
+      Ha a panel épp alszik (tizedére halványítva), a jelzés <b>ugyanabban a
+      másodpercben teljes fényre ébreszti</b>. A sáv pedig kimondja, mi történt:
+      „Szóltam 1 konzolnak." Ha téves riasztás volt, a Visszavonás mindkét
+      panelről leveszi.
+    </p>
+
+    <figure data-t="k_kep1">
+      <img src="kep/konzol-fokepernyo.jpg" width="760" height="330" loading="lazy"
+           alt="Két fali konzol egymás mellett. Mindkettőn felül a helyiség neve és sorszáma — Iroda 0001 és Betegszoba 0002 —, alattuk két csempe: „Jól vagyok” és „Villany KI”, legalul egy nagy, piros SEGÍTSÉG gomb.">
+      <figcaption>A főképernyő. Három dolog, semmi több.</figcaption>
+    </figure>
+
+    <figure data-t="k_kep2">
+      <img src="kep/konzol-segitseg-lanc.jpg" width="630" height="280" loading="lazy"
+           alt="Ugyanaz a két konzol riasztás közben. A hívó panelen „Szóltam 1 konzolnak” és egy Visszavonás gomb; a másikon piros sávban „SEGÍTSÉG — Betegszoba, valaki segítséget kér a házban”, és egy ujj épp megnyomja a „Jövök!” gombot.">
+      <figcaption>A lánc működés közben: a hívás megérkezett, és a válasz indul.</figcaption>
+    </figure>
+
+    <figure data-t="k_film">
+      <video controls preload="none" width="1920" height="1080"
+             poster="kep/konzol-segitseg-lanc.jpg"
+             aria-label="Film: két fali konzol egy otthoni hálózaton, SEGÍTSÉG-hívás és „Jövök!” válasz.">
+        <source src="film/konzol-segitseg-lanc.mp4" type="video/mp4">
+        A böngésző nem tudja lejátszani a filmet.
+      </video>
+      <figcaption>
+        Film (108 másodperc, hang nélkül): a két panel megtalálja egymást, a
+        Betegszobában valaki megnyomja a SEGÍTSÉG gombot, az Irodában megjelenik a
+        hívás, és a „Jövök!” válasz visszaér. Mindent, ami a filmen látszik, a
+        fenti négy bekezdés le is ír — a film nem hordoz külön információt.
+      </figcaption>
+    </figure>
+  </section>
+
   <!-- A „Partnereknek" és a „Ki áll mögötte" szakasz 2026-09-12-én egy órát élt:
        Peter — „túl korai". A szövegük a git-történetben megvan, ha eljön az ideje. -->
 
@@ -288,6 +399,20 @@ var SZOVEG = {
     epul_4: '<b>Anhänger mit Sturzerkennung</b>',
     epul_5: '<b>Sensoren fürs Zuhause</b> — Rauch, Gasleck, Kohlenmonoxid, austretendes Wasser, eine auskühlende Wohnung.',
     zaro: 'Alle melden sich über die <b>Segítség</b>-App oder die <b>Konsole</b> — keine weitere App, die man lernen müsste.',
+    cimke_gyogyszer: 'Genauer betrachtet',
+    gy_cim: 'Über den Medikamentenspender',
+    gy_1: 'Die Elektronik entsteht gerade — und zwar nicht als Erinnerungsfunktion. Gefährlich ist nicht, wenn jemand vergisst, sein Medikament zu nehmen, sondern wenn er sich <b>erinnert, es genommen zu haben</b>. Die Erinnerung ist da, sie ist nur falsch — und dagegen ist eine Erinnerung machtlos.',
+    gy_2: 'Deshalb fragt dieses Gerät nicht nach und glaubt der Antwort nicht. Es bestätigt auf <b>zwei voneinander unabhängigen Ebenen</b>, dass die Dosis das Fach tatsächlich verlassen hat. Solange diese Bestätigung fehlt, gibt es keine Ruhe.',
+    gy_3: 'Wird das Signal lange ignoriert und liegen die Kapseln noch im Fach, geht eine Benachrichtigung an Angehörige oder Pflegende — über die <b>Segítség</b>-App oder die <b>Konsole</b>. An jemanden, der zum Telefon greifen und nachfragen kann.',
+    gy_4: 'Die Menschen, die das am dringendsten brauchen, sehen oft am wenigsten. Deshalb: große Schrift, echter Kontrast, tastbare Tasten — und Farbe ist nie das einzige Signal. Diese Seite ist nach denselben Regeln gebaut: die Schriftgröße lässt sich oben einstellen, und beim Sprachwechsel stellt sich auch der Screenreader auf die richtige Sprache um.',
+    k_cim: 'Über die Wandkonsole',
+    k_1: 'Im Notfall soll niemand erst ein Telefon suchen. Die Konsole hängt an der Wand, dort, wo man ohnehin nach einem Schalter greift: eine große, rote Taste <b>SEGÍTSÉG</b> (Hilfe), daneben zwei Kacheln — „Mir geht es gut“ und das Licht.',
+    k_2: 'Aber ein Alarm allein genügt nicht. Wer die Taste gedrückt hat, muss auch erfahren, dass <b>jemand kommt</b>. Deshalb sprechen die Konsolen im Haus miteinander: im anderen Zimmer erscheint „SEGÍTSÉG — Krankenzimmer“, und wer dort ist, antwortet mit einer einzigen Taste: <b>„Jövök!“</b> (Ich komme!) — und genau das erscheint bei der Person, die gerufen hat.',
+    k_3: 'Mit zwei echten Panels in einem gewöhnlichen Heimnetz gemessen: von der Taste bis zur Antwort „Ich komme!“ vergehen <b>zehn Sekunden</b>. Die Konsolen finden einander von selbst im Netz — keine Einrichtung, keine Cloud, kein Abo.',
+    k_4: 'Schläft das Panel gerade (auf ein Zehntel gedimmt), weckt das Signal es <b>in derselben Sekunde auf volle Helligkeit</b>. Und die Leiste sagt, was passiert ist: „Ich habe 1 Konsole benachrichtigt.“ War es ein Fehlalarm, nimmt „Abbrechen“ ihn auf beiden Panels zurück.',
+    k_kep1: '<img src="kep/konzol-fokepernyo.jpg" width="760" height="330" loading="lazy" alt="Zwei Wandkonsolen nebeneinander. Oben jeweils Raumname und Nummer — Büro 0001 und Krankenzimmer 0002 —, darunter zwei Kacheln: „Mir geht es gut“ und „Licht AUS“, ganz unten eine große, rote Taste SEGÍTSÉG (Hilfe)."><figcaption>Der Hauptbildschirm. Drei Dinge, mehr nicht.</figcaption>',
+    k_kep2: '<img src="kep/konzol-segitseg-lanc.jpg" width="630" height="280" loading="lazy" alt="Dieselben zwei Konsolen während eines Alarms. Auf dem rufenden Panel steht „Ich habe 1 Konsole benachrichtigt“ und eine Taste „Abbrechen“; auf dem anderen in einem roten Balken „SEGÍTSÉG — Krankenzimmer, jemand im Haus braucht Hilfe“, und ein Finger drückt gerade die Taste „Jövök!“ (Ich komme!)."><figcaption>Die Kette in Aktion: der Ruf ist angekommen, die Antwort geht hinaus.</figcaption>',
+    k_film: '<video controls preload="none" width="1920" height="1080" poster="kep/konzol-segitseg-lanc.jpg" aria-label="Film: zwei Wandkonsolen in einem Heimnetz, ein Hilferuf und die Antwort „Ich komme!“."><source src="film/konzol-segitseg-lanc.mp4" type="video/mp4">Der Browser kann den Film nicht abspielen.</video><figcaption>Film (108 Sekunden, ohne Ton): Die beiden Panels finden einander, im Krankenzimmer drückt jemand die Hilfe-Taste, im Büro erscheint der Ruf, und die Antwort „Ich komme!“ kommt zurück. Alles, was im Film zu sehen ist, steht auch in den vier Absätzen darüber — der Film trägt keine eigene Information.</figcaption>',
     kapcsolat: 'Kontakt:'
   },
   en: {
@@ -302,6 +427,20 @@ var SZOVEG = {
     epul_4: '<b>Fall-detecting pendant</b>',
     epul_5: '<b>Home sensors</b> — smoke, gas leak, carbon monoxide, water leak, a home going cold.',
     zaro: 'All of them raise the alarm through the <b>Segítség</b> app or the <b>console</b> — there is no separate app to learn.',
+    cimke_gyogyszer: 'A closer look',
+    gy_cim: 'About the pill dispenser',
+    gy_1: 'Its electronics are being designed right now — and not as a reminder. The dangerous case is not someone forgetting to take their medication. It is someone <b>remembering that they took it</b>. The memory is there; it is simply wrong — and a reminder is useless against that.',
+    gy_2: 'So this device does not ask, and does not trust the answer. It confirms on <b>two independent levels</b> that the dose actually left its compartment. Until that confirmation exists, it does not let the matter drop.',
+    gy_3: 'If the signal is ignored for long enough while the capsules are still in the compartment, a notification goes to a family member or carer — through the <b>Segítség</b> app or the <b>console</b>. Someone who can pick up the phone and ask.',
+    gy_4: 'The people who need this most are often the ones who see the least. So: large type, real contrast, tactile buttons — and colour is never the only signal. This page is built by the same rules: the text size can be set above, and when the language changes, the screen reader switches language too.',
+    k_cim: 'About the wall console',
+    k_1: 'In an emergency nobody should have to look for a phone. The console is on the wall, where a person reaches for a switch anyway: one large red <b>SEGÍTSÉG</b> (Help) button, and two tiles beside it — “I am fine” and the light.',
+    k_2: 'But an alarm on its own is not enough. Whoever pressed the button also needs to learn that <b>someone is coming</b>. So the consoles in the house talk to each other: in the other room the screen shows “SEGÍTSÉG — Sickroom”, and the person there answers with a single button: <b>“Jövök!”</b> (I am coming!) — and that is what appears on the console of the person who called.',
+    k_3: 'Measured with two real panels on an ordinary home network: from the button press to the answer “I am coming!” takes <b>ten seconds</b>. The consoles find each other on the network by themselves — no setup, no cloud, no subscription.',
+    k_4: 'If the panel happens to be asleep (dimmed to a tenth), the signal wakes it <b>to full brightness in the same second</b>. And the strip says what happened: “I notified 1 console.” If it was a false alarm, Cancel takes it down on both panels.',
+    k_kep1: '<img src="kep/konzol-fokepernyo.jpg" width="760" height="330" loading="lazy" alt="Two wall consoles side by side. Each shows the room name and number at the top — Office 0001 and Sickroom 0002 — then two tiles: “I am fine” and “Light OFF”, and at the bottom a large red SEGÍTSÉG (Help) button."><figcaption>The main screen. Three things, nothing more.</figcaption>',
+    k_kep2: '<img src="kep/konzol-segitseg-lanc.jpg" width="630" height="280" loading="lazy" alt="The same two consoles during an alarm. The calling panel says “I notified 1 console” with a Cancel button; the other shows a red bar reading “SEGÍTSÉG — Sickroom, someone in the house needs help”, and a finger is pressing the “Jövök!” (I am coming!) button."><figcaption>The chain at work: the call has arrived, and the answer is on its way.</figcaption>',
+    k_film: '<video controls preload="none" width="1920" height="1080" poster="kep/konzol-segitseg-lanc.jpg" aria-label="Film: two wall consoles on a home network, a call for help and the answer “I am coming!”."><source src="film/konzol-segitseg-lanc.mp4" type="video/mp4">Your browser cannot play this film.</video><figcaption>Film (108 seconds, no sound): the two panels find each other, someone in the sickroom presses the help button, the call appears in the office, and the answer “I am coming!” comes back. Everything visible in the film is also written in the four paragraphs above — the film carries no information of its own.</figcaption>',
     kapcsolat: 'Contact:'
   }
 };
