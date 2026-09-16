@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Vigyázok Rád">
+  <title>Vigyázok Rád</title>
+  <!-- ⚠ TÖMÖR CSEMPE, nem a fejléc vonalas jele. A fülön ez 16 pont: ott egy
+       vékony ív és egy kis kör összemosódik a háttérrel. A kitöltött lila
+       négyzet fehér ívvel viszont bármilyen fülsávon megáll — világoson és
+       sötéten is —, és ugyanaz a jel, ami a prospektus fejlécében van. -->
+  <rect width="100" height="100" rx="22" fill="#4A298A"/>
+  <path d="M14 58A36 36 0 0 1 86 58" fill="none" stroke="#FBF8F4"
+        stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="50" cy="74" r="13.5" fill="#D9A566"/>
+</svg>
