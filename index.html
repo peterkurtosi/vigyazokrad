@@ -153,6 +153,38 @@ h1{
 }
 :focus-visible{outline:3px solid var(--homok); outline-offset:3px}
 
+/* ── a prospektus letöltése ───────────────────────────────────────
+   Kicsinyített első lap a szöveg mellett, hogy RÁNÉZÉSRE látszódjon:
+   innen egy igazi, megtervezett prospektus tölthető le.
+
+   ⚠ A KÉP NEM AZ EGYETLEN JELZÉS. A cím, a bekezdés és a gomb felirata
+     külön-külön is elmondja, mi tölthető le és mekkora — aki nem látja
+     a képet, semmit nem veszít. Ezért a kép NEM is link: egy cél, egy
+     link, egy egyértelmű felirat. Két, ugyanoda mutató link csak
+     ismételné magát a képernyőolvasóban.                            */
+.letoltes-sor{display:flex; gap:clamp(18px,4vw,28px); align-items:flex-start; flex-wrap:wrap}
+.letoltes-sor .szoveg{flex:1 1 250px; min-width:0}
+.borito{flex:0 0 auto; width:170px; max-width:100%; margin:0; position:relative}
+/* A „több lap” érzete: két elcsúsztatott lap a kép MÖGÖTT. Tiszta
+   dekoráció — ::before/::after, tehát a képernyőolvasó nem lát belőle
+   semmit, és a „2 oldal” a gomb feliratában amúgy is ott áll. */
+.borito::before,.borito::after{
+  content:""; position:absolute; inset:0; border-radius:6px;
+  background:var(--lap); border:1px solid var(--keret); z-index:0;
+}
+.borito::before{transform:translate(9px,9px)}
+.borito::after{transform:translate(4.5px,4.5px)}
+.borito img{
+  position:relative; z-index:1; display:block; width:100%; height:auto;
+  border:1px solid var(--keret); border-radius:6px; background:var(--lap);
+  box-shadow:0 5px 16px color-mix(in srgb, #000 20%, transparent);
+}
+/* A teljes szélességű gomb: egy sorban elfér a felirat, és nagy célpont. */
+.gomb.szeles{display:block; text-align:center; margin-top:22px}
+@media (max-width:430px){
+  .borito{width:132px; margin-left:auto; margin-right:auto}
+}
+
 /* ── ami épül ─────────────────────────────────────────────────── */
 ul{list-style:none; margin-bottom:clamp(40px,8vw,60px)}
 li{
@@ -410,11 +442,23 @@ footer p + p{margin-top:8px}
          az tudja meg előre, mekkorát tölt. -->
   <section class="termek" data-t="letoltes">
     <h2>A prospektus</h2>
-    <p>
-      Két oldal A4-en, kinyomtatható formában: ami ma működik, ami jön, és a
-      két készülék <b>közös elve</b>. Ugyanez a szöveg, egy lapra fogva.
-    </p>
-    <a class="gomb" href="prospektus/vigyazokrad-prospektus-hu.pdf" download>
+    <div class="letoltes-sor">
+      <figure class="borito">
+        <img src="prospektus/borito-hu.jpg" width="397" height="562" loading="lazy"
+             alt="A prospektus első lapjának kicsinyített képe: a Vigyázok Rád fejléc alatt négy doboz — „Ami ma működik”, „Ami jön”, „Kiknek” és „Amiben nem alkuszunk” —, alattuk két fénykép a fali konzolokról.">
+      </figure>
+      <div class="szoveg">
+        <p>
+          Két oldal A4-en, kinyomtatható formában: ami ma működik, ami jön, és a
+          két készülék <b>közös elve</b>. Ugyanez a szöveg, egy lapra fogva.
+        </p>
+      </div>
+    </div>
+    <!-- ⚠ A GOMB A SOR ALATT ÁLL, nem a szövegoszlopban. A kép mellett a
+         szövegnek ~370 pont marad, és ott a felirat („…PDF, 430 kB, 2 oldal")
+         KÉT SORBA TÖRT, a „2 oldal" magára maradt. Teljes szélességben egy
+         sor — és nagyobb célpont az ujjnak is. -->
+    <a class="gomb szeles" href="prospektus/vigyazokrad-prospektus-hu.pdf" download>
       Prospektus letöltése — PDF, 430 kB, 2 oldal
     </a>
   </section>
@@ -471,9 +515,14 @@ var SZOVEG = {
     elv_3: '<b>Bei der Konsole:</b> Ein Alarm genügt nicht — es braucht eine <b>Antwort</b>.',
     elv_4: 'Beide kommen an derselben Stelle heraus: ein Signal allein ist nur eine Hoffnung. Zur Hilfe wird es erst dadurch, dass <b>etwas zurückkommt</b> — eine Bestätigung, dass es geschehen ist, oder ein „Ich komme!“, dass sich jemand auf den Weg gemacht hat. Die meisten Geräte hören beim Signal auf. Den Kreis zu schließen ist die schwierigere Hälfte — und die eigentliche.',
     letoltes: '<h2>Das Prospekt</h2>'+
+      '<div class="letoltes-sor">'+
+      '<figure class="borito"><img src="prospektus/borito-de.jpg" width="397" height="562" loading="lazy" '+
+      'alt="Verkleinerte Ansicht der ersten Prospektseite: unter der Kopfzeile Vigyázok Rád vier Kästen — „Was heute funktioniert“, „Was kommt“, „Für wen“ und „Woran wir festhalten“ —, darunter zwei Fotos der Wandkonsolen."></figure>'+
+      '<div class="szoveg">'+
       '<p>Zwei A4-Seiten zum Ausdrucken: was heute funktioniert, was kommt, und das '+
       '<b>gemeinsame Prinzip</b> der beiden Geräte. Derselbe Text, auf einem Blatt.</p>'+
-      '<a class="gomb" href="prospektus/vigyazokrad-prospektus-de.pdf" download>'+
+      '</div></div>'+
+      '<a class="gomb szeles" href="prospektus/vigyazokrad-prospektus-de.pdf" download>'+
       'Prospekt herunterladen — PDF, 418 kB, 2 Seiten</a>',
     kapcsolat: 'Kontakt:'
   },
@@ -510,9 +559,14 @@ var SZOVEG = {
     elv_3: '<b>For the console:</b> an alarm is not enough — it needs an <b>answer</b>.',
     elv_4: 'Both come out in the same place: a signal on its own is only a hope. It becomes help when <b>something comes back</b> — a confirmation that it happened, or an “I am coming!” that someone has set off. Most devices stop at the signal. Closing the loop is the harder half — and the point of the whole thing.',
     letoltes: '<h2>The brochure</h2>'+
+      '<div class="letoltes-sor">'+
+      '<figure class="borito"><img src="prospektus/borito-en.jpg" width="397" height="562" loading="lazy" '+
+      'alt="A small image of the brochure’s first page: under the Vigyázok Rád heading, four boxes — “What works today”, “What is coming”, “Who it is for” and “What we hold to” — and below them two photographs of the wall consoles."></figure>'+
+      '<div class="szoveg">'+
       '<p>Two A4 pages to print: what works today, what is coming, and the '+
       '<b>shared principle</b> behind both devices. The same text, on one sheet.</p>'+
-      '<a class="gomb" href="prospektus/vigyazokrad-prospektus-en.pdf" download>'+
+      '</div></div>'+
+      '<a class="gomb szeles" href="prospektus/vigyazokrad-prospektus-en.pdf" download>'+
       'Download the brochure — PDF, 384 kB, 2 pages</a>',
     kapcsolat: 'Contact:'
   }
