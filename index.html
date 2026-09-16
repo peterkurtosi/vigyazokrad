@@ -28,9 +28,14 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
 <!-- A betűtípusok HELYBŐL jönnek (betuk/), nem a Google CDN-jéről: így az
-     oldal betöltése egyetlen adatot sem küld harmadik félnek. Ugyanaz a két
+     oldal betöltése egyetlen adatot sem küld HARMADIK FÉLNEK. Ugyanaz a két
      betű, mint a Segítség app oldalán — közös írás, hogy aki az egyiket
-     ismeri, felismerje a másikat is. -->
+     ismeri, felismerje a másikat is.
+
+     ⚠ EGY KÉRÉS MÉGIS ELMEGY, és ezt itt is kimondjuk, hogy a fenti mondat
+       pontos maradjon: a lap alján egy látogatás-számláló egyetlen szót küld
+       (a nyelvet) Peter SAJÁT szerverére. Nem harmadik fél, nincs süti, nincs
+       IP-tárolás. A részletek annál a kódnál, a fájl végén. -->
 <style>
 @font-face{font-family:'Archivo';font-style:normal;font-weight:500 700;font-display:swap;
   src:url(betuk/archivo-latin-ext.woff2) format('woff2');
@@ -641,6 +646,44 @@ nyelvetAllit(SZOVEG[urlNyelv] ? urlNyelv : (SZOVEG[mentettNyelv] ? mentettNyelv 
 
 var mentettMeret = biztosTarolas(function () { return localStorage.getItem('vigyazokrad-meret'); }, null);
 meretetAllit(mentettMeret !== null && MERETEK[Number(mentettMeret)] ? Number(mentettMeret) : 1);
+
+/* ── LÁTOGATÁS-SZÁMLÁLÓ ────────────────────────────────────────────
+   Peter és én tudni szeretnénk, hányan jártak itt és milyen nyelven.
+   A látogatónak ebből SEMMI nem látszik, és a lap sem lesz tőle lassabb.
+
+   ⚠ AMIT ELKÜLD: EGY szó — 'hu', 'de' vagy 'en'. Semmi mást.
+   ⚠ AHOVÁ KÜLDI: Peter SAJÁT szerverére. Nincs harmadik fél, nincs
+     Google, nincs analitikai szolgáltató — ezért marad igaz az, hogy
+     ez az oldal senki idegennek nem ad adatot rólad.
+   ⚠ AMIT NEM CSINÁL: nincs süti, nincs localStorage, nincs IP-tárolás
+     a szerveren sem. A `sessionStorage` jelző a fül bezárásával
+     elmúlik — tehát még ezen a gépen sem marad nyoma.
+
+   ⚠ ÉS AMIT A SZÁM JELENT: egy böngésző-munkamenet, NEM egy ember.
+     Aki holnap visszajön, az két látogatás.
+
+   A `keepalive` azért kell, hogy a kérés akkor is elmenjen, ha a
+   látogató rögtön továbblép. A hiba SZÁNDÉKOSAN néma: egy számláló
+   soha nem ronthatja el az oldalt. */
+(function () {
+  var CIM = 'https://climatecloud-web.duckdns.org/vr/hit';
+  try {
+    if (sessionStorage.getItem('vr-szamolva')) { return; }
+    sessionStorage.setItem('vr-szamolva', '1');
+  } catch (e) { /* privát ablak: nem baj, akkor munkamenetenként egyszer */ }
+  /* ⚠ 'text/plain', NEM 'application/json' — és ez nem szőrszálhasogatás:
+     a JSON tartalomtípus miatt a böngésző ELŐZETES (OPTIONS) kérést küld,
+     vagyis minden látogató KÉT kérést tenne egy helyett. A 'text/plain'
+     egyszerű kérésnek számít, előzetes kérés nélkül. A szerver a törzset
+     így is JSON-ként olvassa. */
+  try {
+    fetch(CIM, {
+      method: 'POST', keepalive: true, mode: 'cors', credentials: 'omit',
+      headers: { 'content-type': 'text/plain' },
+      body: JSON.stringify({ lang: document.documentElement.lang || 'hu' })
+    }).catch(function () {});
+  } catch (e) { /* néma */ }
+})();
 </script>
 </body>
 </html>
