@@ -394,6 +394,31 @@ footer p + p{margin-top:8px}
     </p>
   </section>
 
+  <!-- ⭐ A PROSPEKTUS LETÖLTÉSE — 2026-09-16.
+       Ez a lap ZÁRÁSA: aki idáig elolvasta, most viheti magával.
+
+       ⚠⚠ AZ EGÉSZ SZAKASZ data-t ALATT ÁLL, nem csak a felirat. Azért, mert a
+         `href` ATTRIBÚTUM, a fordító pedig az innerHTML-t cseréli — ha csak a
+         szöveget tennénk data-t alá, egy német látogató német feliratú gombot
+         látna, ami a MAGYAR PDF-et tölti le. Ugyanaz a csapda, mint a képek
+         `alt`-jánál.
+         Ennek az ára: a fájlnév és a méret három helyen szerepel (HTML, de, en).
+         Ha új prospektus készül, mind a hármat át kell írni.
+
+       ⚠ A GOMB KIMONDJA, hogy PDF, mekkora és hány oldal. Képernyőolvasóval
+         egy letöltés ne érjen meglepetésként senkit — és aki mért adaton van,
+         az tudja meg előre, mekkorát tölt. -->
+  <section class="termek" data-t="letoltes">
+    <h2>A prospektus</h2>
+    <p>
+      Két oldal A4-en, kinyomtatható formában: ami ma működik, ami jön, és a
+      két készülék <b>közös elve</b>. Ugyanez a szöveg, egy lapra fogva.
+    </p>
+    <a class="gomb" href="prospektus/vigyazokrad-prospektus-hu.pdf" download>
+      Prospektus letöltése — PDF, 430 kB, 2 oldal
+    </a>
+  </section>
+
   <!-- A „Partnereknek" és a „Ki áll mögötte" szakasz 2026-09-12-én egy órát élt:
        Peter — „túl korai". A szövegük a git-történetben megvan, ha eljön az ideje. -->
 
@@ -445,6 +470,11 @@ var SZOVEG = {
     elv_2: '<b>Beim Medikamentenspender:</b> Eine Erinnerung genügt nicht — es braucht eine <b>Bestätigung</b>.',
     elv_3: '<b>Bei der Konsole:</b> Ein Alarm genügt nicht — es braucht eine <b>Antwort</b>.',
     elv_4: 'Beide kommen an derselben Stelle heraus: ein Signal allein ist nur eine Hoffnung. Zur Hilfe wird es erst dadurch, dass <b>etwas zurückkommt</b> — eine Bestätigung, dass es geschehen ist, oder ein „Ich komme!“, dass sich jemand auf den Weg gemacht hat. Die meisten Geräte hören beim Signal auf. Den Kreis zu schließen ist die schwierigere Hälfte — und die eigentliche.',
+    letoltes: '<h2>Das Prospekt</h2>'+
+      '<p>Zwei A4-Seiten zum Ausdrucken: was heute funktioniert, was kommt, und das '+
+      '<b>gemeinsame Prinzip</b> der beiden Geräte. Derselbe Text, auf einem Blatt.</p>'+
+      '<a class="gomb" href="prospektus/vigyazokrad-prospektus-de.pdf" download>'+
+      'Prospekt herunterladen — PDF, 418 kB, 2 Seiten</a>',
     kapcsolat: 'Kontakt:'
   },
   en: {
@@ -479,6 +509,11 @@ var SZOVEG = {
     elv_2: '<b>For the pill dispenser:</b> a reminder is not enough — it needs a <b>confirmation</b>.',
     elv_3: '<b>For the console:</b> an alarm is not enough — it needs an <b>answer</b>.',
     elv_4: 'Both come out in the same place: a signal on its own is only a hope. It becomes help when <b>something comes back</b> — a confirmation that it happened, or an “I am coming!” that someone has set off. Most devices stop at the signal. Closing the loop is the harder half — and the point of the whole thing.',
+    letoltes: '<h2>The brochure</h2>'+
+      '<p>Two A4 pages to print: what works today, what is coming, and the '+
+      '<b>shared principle</b> behind both devices. The same text, on one sheet.</p>'+
+      '<a class="gomb" href="prospektus/vigyazokrad-prospektus-en.pdf" download>'+
+      'Download the brochure — PDF, 384 kB, 2 pages</a>',
     kapcsolat: 'Contact:'
   }
 };
