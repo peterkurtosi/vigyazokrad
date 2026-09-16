@@ -368,6 +368,32 @@ footer p + p{margin-top:8px}
     </figure>
   </section>
 
+  <!-- ⭐ A KÖZÖS ELV — 2026-09-16.
+       A két szakasz egymás mellé kerülve mutatta meg, hogy ugyanaz a mondat áll
+       mögöttük. Ez a lap ZÁRÁSA, nem a nyitása: a két példa után van súlya.
+       ⚠ Négy külön bekezdés, nem egy <br>-ekkel tagolt. Képernyőolvasóval így
+         lehet bekezdésenként léptetni köztük, és mindegyik EGY állítás. -->
+  <p class="cimke" data-t="cimke_elv">A közös elv</p>
+  <section class="termek">
+    <h2 data-t="elv_cim">Egy elv, kétszer</h2>
+    <p data-t="elv_1">
+      Ez a két készülék nem két külön ötlet. Ugyanaz a mondat áll mögöttük,
+      kétszer:
+    </p>
+    <p data-t="elv_2">
+      <b>A gyógyszeradagolónál:</b> egy emlékeztetés kevés — <b>visszaigazolás</b> kell.
+    </p>
+    <p data-t="elv_3">
+      <b>A konzolnál:</b> egy riasztás kevés — <b>válasz</b> kell.
+    </p>
+    <p data-t="elv_4">
+      Mind a kettő ugyanoda jut ki: a jelzés önmagában csak remény. Attól lesz
+      belőle segítség, hogy <b>visszaérkezik valami</b> — egy igazolás, hogy
+      megtörtént, vagy egy „Jövök!”, hogy valaki elindult. A legtöbb eszköz a
+      jelzésnél megáll. A kör bezárása a nehezebb fele — és az a lényeg.
+    </p>
+  </section>
+
   <!-- A „Partnereknek" és a „Ki áll mögötte" szakasz 2026-09-12-én egy órát élt:
        Peter — „túl korai". A szövegük a git-történetben megvan, ha eljön az ideje. -->
 
@@ -413,6 +439,12 @@ var SZOVEG = {
     k_kep1: '<img src="kep/konzol-fokepernyo.jpg" width="760" height="330" loading="lazy" alt="Zwei Wandkonsolen nebeneinander. Oben jeweils Raumname und Nummer — Büro 0001 und Krankenzimmer 0002 —, darunter zwei Kacheln: „Mir geht es gut“ und „Licht AUS“, ganz unten eine große, rote Taste SEGÍTSÉG (Hilfe)."><figcaption>Der Hauptbildschirm. Drei Dinge, mehr nicht.</figcaption>',
     k_kep2: '<img src="kep/konzol-segitseg-lanc.jpg" width="630" height="280" loading="lazy" alt="Dieselben zwei Konsolen während eines Alarms. Auf dem rufenden Panel steht „Ich habe 1 Konsole benachrichtigt“ und eine Taste „Abbrechen“; auf dem anderen in einem roten Balken „SEGÍTSÉG — Krankenzimmer, jemand im Haus braucht Hilfe“, und ein Finger drückt gerade die Taste „Jövök!“ (Ich komme!)."><figcaption>Die Kette in Aktion: der Ruf ist angekommen, die Antwort geht hinaus.</figcaption>',
     k_film: '<video controls preload="none" width="1920" height="1080" poster="kep/konzol-segitseg-lanc.jpg" aria-label="Film: zwei Wandkonsolen in einem Heimnetz, ein Hilferuf und die Antwort „Ich komme!“."><source src="film/konzol-segitseg-lanc.mp4" type="video/mp4">Der Browser kann den Film nicht abspielen.</video><figcaption>Film (108 Sekunden, ohne Ton): Die beiden Panels finden einander, im Krankenzimmer drückt jemand die Hilfe-Taste, im Büro erscheint der Ruf, und die Antwort „Ich komme!“ kommt zurück. Alles, was im Film zu sehen ist, steht auch in den vier Absätzen darüber — der Film trägt keine eigene Information.</figcaption>',
+    cimke_elv: 'Das gemeinsame Prinzip',
+    elv_cim: 'Ein Prinzip, zweimal',
+    elv_1: 'Diese beiden Geräte sind nicht zwei getrennte Einfälle. Hinter beiden steht derselbe Satz, zweimal:',
+    elv_2: '<b>Beim Medikamentenspender:</b> Eine Erinnerung genügt nicht — es braucht eine <b>Bestätigung</b>.',
+    elv_3: '<b>Bei der Konsole:</b> Ein Alarm genügt nicht — es braucht eine <b>Antwort</b>.',
+    elv_4: 'Beide kommen an derselben Stelle heraus: ein Signal allein ist nur eine Hoffnung. Zur Hilfe wird es erst dadurch, dass <b>etwas zurückkommt</b> — eine Bestätigung, dass es geschehen ist, oder ein „Ich komme!“, dass sich jemand auf den Weg gemacht hat. Die meisten Geräte hören beim Signal auf. Den Kreis zu schließen ist die schwierigere Hälfte — und die eigentliche.',
     kapcsolat: 'Kontakt:'
   },
   en: {
@@ -441,6 +473,12 @@ var SZOVEG = {
     k_kep1: '<img src="kep/konzol-fokepernyo.jpg" width="760" height="330" loading="lazy" alt="Two wall consoles side by side. Each shows the room name and number at the top — Office 0001 and Sickroom 0002 — then two tiles: “I am fine” and “Light OFF”, and at the bottom a large red SEGÍTSÉG (Help) button."><figcaption>The main screen. Three things, nothing more.</figcaption>',
     k_kep2: '<img src="kep/konzol-segitseg-lanc.jpg" width="630" height="280" loading="lazy" alt="The same two consoles during an alarm. The calling panel says “I notified 1 console” with a Cancel button; the other shows a red bar reading “SEGÍTSÉG — Sickroom, someone in the house needs help”, and a finger is pressing the “Jövök!” (I am coming!) button."><figcaption>The chain at work: the call has arrived, and the answer is on its way.</figcaption>',
     k_film: '<video controls preload="none" width="1920" height="1080" poster="kep/konzol-segitseg-lanc.jpg" aria-label="Film: two wall consoles on a home network, a call for help and the answer “I am coming!”."><source src="film/konzol-segitseg-lanc.mp4" type="video/mp4">Your browser cannot play this film.</video><figcaption>Film (108 seconds, no sound): the two panels find each other, someone in the sickroom presses the help button, the call appears in the office, and the answer “I am coming!” comes back. Everything visible in the film is also written in the four paragraphs above — the film carries no information of its own.</figcaption>',
+    cimke_elv: 'The shared principle',
+    elv_cim: 'One principle, twice',
+    elv_1: 'These two devices are not two separate ideas. The same sentence stands behind both of them, twice:',
+    elv_2: '<b>For the pill dispenser:</b> a reminder is not enough — it needs a <b>confirmation</b>.',
+    elv_3: '<b>For the console:</b> an alarm is not enough — it needs an <b>answer</b>.',
+    elv_4: 'Both come out in the same place: a signal on its own is only a hope. It becomes help when <b>something comes back</b> — a confirmation that it happened, or an “I am coming!” that someone has set off. Most devices stop at the signal. Closing the loop is the harder half — and the point of the whole thing.',
     kapcsolat: 'Contact:'
   }
 };
