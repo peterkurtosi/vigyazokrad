@@ -1,0 +1,1330 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Otthonoknak — Vigyázok Rád</title>
+<meta name="description" content="Terv egy 15–25 szobás idősotthonnak: konzol minden szobában, gyógyszer-napló, képernyő a nővérpulton. És mindenek előtt: amit ez a rendszer NEM csinál.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Otthonoknak — Vigyázok Rád">
+<meta property="og:description" content="Terv egy 15–25 szobás idősotthonnak. És mindenek előtt: amit ez a rendszer NEM csinál.">
+<meta name="twitter:card" content="summary">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<!-- ⚠ A BETŰK HELYBŐL JÖNNEK (betuk/), nem a Google CDN-jéről — ugyanúgy, mint
+     a főoldalon. Az adatvédelmi állításunk ezen áll: ennek a lapnak a
+     betöltése egyetlen kérést sem küld a kiszolgálóján kívülre.
+
+     ⚠ A LAP HÁROM NYELVE EGYMÁS ALATT ÁLL a HTML-ben. JavaScript nélkül
+       mind a három olvasható; a kapcsoló csak SZŰR. Ez szándékos: ez egy
+       hosszú, komoly dokumentum, amit valaki lementhet vagy kinyomtathat,
+       és nem múlhat azon, fut-e a szkript.
+       (A főoldal másképp csinálja — ott a magyar áll a HTML-ben és a
+       szótár írja felül. Ott rövid a szöveg, itt nem.)
+
+     ⭐ A NYELV ÉS A BETŰMÉRET ÁTJÖN A FŐOLDALRÓL: ugyanaz a domain, tehát
+       ugyanaz a localStorage, és ugyanazt a két kulcsot használjuk
+       (`vigyazokrad-nyelv`, `vigyazokrad-meret`). Aki a főoldalt németül
+       nézte, ide is németül érkezik. -->
+<style>
+@font-face{font-family:'Archivo';font-style:normal;font-weight:500 700;font-display:swap;
+  src:url(betuk/archivo-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:500 700;font-display:swap;
+  src:url(betuk/archivo-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:400 600;font-display:swap;
+  src:url(betuk/public-sans-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:400 600;font-display:swap;
+  src:url(betuk/public-sans-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+
+/* ── A MÁRKA SZÍNEI — ugyanazok, mint a főoldalon ──────────────────
+   A világos paletta a bare :root-on áll, hogy a „rendszer" beállításnál
+   (ami semmit nem bélyegez a gyökérre) is teljes legyen.
+   ⭐ ÚJ ITT: a --piros a FONTOS dobozokhoz. A főoldalon nincs rá szükség. */
+:root{
+  --lila:#4A298A;  --melylila:#3B2263;  --homok:#D9A566;
+  --papir:#FBF8F4; --halvany:#F0E6D8;   --tompa:#6B6155;
+  --szoveg:#2A2118; --keret:#E4DACB;    --lap:#FFFFFF;
+  --piros:#A3231C; --piros-lap:#FCF2F0;
+  --alap:20px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --lila:#B79BEE;  --melylila:#E2DCEC; --homok:#E0B87E;
+    --papir:#191320; --halvany:#241B30;  --tompa:#A79DBA;
+    --szoveg:#F1EEF7; --keret:#332942;   --lap:#211829;
+    --piros:#F0A9A4; --piros-lap:#2C1A1E;
+  }
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--papir); color:var(--szoveg);
+  font-family:'Public Sans',ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:var(--alap); line-height:1.65;
+  display:flex; flex-direction:column; align-items:center;
+  padding:clamp(16px,3vw,32px) 20px 56px;
+}
+.mag{width:100%; max-width:660px}
+
+/* ── vezérlők: nyelv és betűméret (a főoldal mintájára) ───────────── */
+.vezerlok{
+  display:flex; justify-content:space-between; align-items:center;
+  gap:10px; flex-wrap:wrap; margin-bottom:22px;
+}
+.nyelvek,.meret{
+  display:flex; border:1px solid var(--keret); border-radius:10px;
+  overflow:hidden; background:var(--lap);
+}
+.nyelvek button,.meret button{
+  font:inherit; font-size:16px; font-weight:500; padding:7px 12px;
+  border:0; border-right:1px solid var(--keret); background:transparent;
+  color:var(--tompa); cursor:pointer; display:flex; align-items:center; gap:8px;
+}
+.nyelvek button:last-child,.meret button:last-child{border-right:0}
+.nyelvek button:hover,.meret button:hover{color:var(--szoveg)}
+.nyelvek button[aria-pressed="true"],.meret button[aria-pressed="true"]{
+  color:var(--szoveg); font-weight:600; box-shadow:inset 0 -3px 0 var(--homok);
+}
+.meret button{font-family:'Archivo',sans-serif; min-width:44px; justify-content:center}
+.zaszlo{
+  width:22px; height:15px; flex:none; border-radius:2.5px;
+  outline:1px solid color-mix(in srgb, var(--szoveg) 22%, transparent);
+  outline-offset:-1px; opacity:.55; transition:opacity .15s ease;
+}
+.nyelvek button:not([aria-pressed="true"]):hover .zaszlo{opacity:.85}
+.nyelvek button[aria-pressed="true"] .zaszlo{opacity:1}
+:focus-visible{outline:3px solid var(--homok); outline-offset:3px}
+
+/* ── vissza a főoldalra ───────────────────────────────────────────
+   ⚠ Ez a lap a főoldalról nyílik, de meg is osztható közvetlenül.
+     Ezért kell rajta út visszafelé, a lap TETEJÉN is. */
+.vissza{margin-bottom:clamp(28px,5vw,40px)}
+.vissza a{
+  font-family:'Archivo',sans-serif; font-weight:600; font-size:.8em;
+  letter-spacing:.06em; color:var(--lila); text-decoration:none;
+}
+.vissza a:hover,.vissza a:focus-visible{text-decoration:underline}
+
+/* ── fejléc ───────────────────────────────────────────────────── */
+.jel{width:84px;height:84px;display:block;margin:0 auto 18px}
+.marka{
+  font-family:'Archivo',sans-serif; font-weight:600; font-size:.72em;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--tompa);
+  text-align:center; margin-bottom:clamp(30px,6vw,46px);
+}
+h1{
+  font-family:'Archivo',sans-serif; font-weight:700;
+  font-size:clamp(32px,7vw,46px); line-height:1.08; letter-spacing:-.02em;
+  color:var(--melylila); text-wrap:balance; text-align:center;
+}
+.mondat{
+  margin-top:16px; font-size:1.05em; color:var(--tompa);
+  text-wrap:balance; max-width:36ch; margin-left:auto; margin-right:auto;
+  text-align:center;
+}
+
+/* ── az állapot-csík: TERV ────────────────────────────────────────
+   ⭐ A LAP LEGELSŐ ÁLLÍTÁSA. Nem szín mondja ki, hanem szó: „TERV".
+      Aki átfutja a lapot, ne hihesse egy percig sem, hogy ez egy
+      megrendelhető termék katalógus-oldala. */
+.allapot{
+  display:flex; gap:14px; align-items:flex-start;
+  margin:clamp(30px,6vw,44px) 0 clamp(36px,7vw,52px);
+  padding:16px 20px; border-radius:12px;
+  background:var(--halvany); border:1px solid var(--keret);
+  border-left:5px solid var(--homok);
+  font-size:.92em;
+}
+.allapot b{font-family:'Archivo',sans-serif; font-weight:700; color:var(--szoveg)}
+
+/* ── szakasz-címkék és kártyák (a főoldal mintájára) ───────────── */
+.cimke{
+  font-family:'Archivo',sans-serif; font-weight:600; font-size:.7em;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--tompa);
+  display:flex; align-items:center; gap:14px; margin:0 0 20px;
+}
+.cimke::after{content:"";flex:1;height:1px;background:var(--keret)}
+.termek{
+  background:var(--lap); border:1px solid var(--keret); border-radius:18px;
+  padding:clamp(22px,5vw,30px); margin-bottom:clamp(40px,8vw,60px);
+}
+.termek h2{
+  font-family:'Archivo',sans-serif; font-weight:700; font-size:1.35em;
+  color:var(--melylila); margin-bottom:10px; text-wrap:balance;
+}
+.termek h3{
+  font-family:'Archivo',sans-serif; font-weight:600; font-size:1.02em;
+  color:var(--szoveg); margin:26px 0 6px; text-wrap:balance;
+}
+.termek p{color:var(--tompa); font-size:.95em}
+.termek p + p{margin-top:12px}
+.termek strong{color:var(--szoveg); font-weight:600}
+.termek em{font-style:italic}
+
+/* ── kiemelt dobozok — SZÍN + SZAVAS CÍMKE + VASTAG SZEGÉLY ──────
+   ⚠ A ház szabálya: a szín SOHA nem az egyetlen jelzés. Minden doboz
+     szavas címkét visel, és fekete-fehér nyomtatásban is megkülönbözteti
+     őket a szegély vastagsága és a címke szövege. */
+.doboz{
+  margin:20px 0; padding:16px 20px; border-radius:0 12px 12px 0;
+  background:var(--halvany); border-left:5px solid var(--keret);
+  font-size:.94em;
+}
+.doboz .dcimke{
+  font-family:'Archivo',sans-serif; font-weight:700; font-size:.74em;
+  letter-spacing:.12em; text-transform:uppercase;
+  margin-bottom:8px; color:var(--tompa);
+}
+.doboz p{color:var(--szoveg); font-size:1em}
+.doboz p + p{margin-top:10px}
+.doboz.fontos{background:var(--piros-lap); border-left-color:var(--piros)}
+.doboz.fontos .dcimke{color:var(--piros)}
+.doboz.jo{border-left-color:var(--homok)}
+.doboz.megjegyzes{border-left-color:var(--tompa)}
+
+/* ── táblázat ─────────────────────────────────────────────────────
+   ⚠ Saját, görgethető burokban: 430 pont széles telefonon a két oszlop
+     nem fér el, és a LAP nem görögheti oldalra magát. */
+.tablaburok{overflow-x:auto; margin:20px 0; -webkit-overflow-scrolling:touch}
+table{border-collapse:collapse; width:100%; font-size:.92em; min-width:420px}
+th,td{text-align:left; padding:11px 14px; border-bottom:1px solid var(--keret); vertical-align:top}
+th{
+  font-family:'Archivo',sans-serif; font-weight:600; font-size:.82em;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--tompa);
+  border-bottom:2px solid var(--keret);
+}
+td{color:var(--tompa)}
+td strong{color:var(--szoveg)}
+tr:last-child td{border-bottom:0}
+
+/* ── listák ───────────────────────────────────────────────────── */
+.termek ul{list-style:none; margin:14px 0 0}
+.termek li{
+  display:flex; gap:13px; align-items:flex-start;
+  padding:11px 0; border-bottom:1px solid var(--keret);
+  color:var(--tompa); font-size:.95em;
+}
+.termek li:last-child{border-bottom:0}
+.termek li::before{
+  content:""; flex:0 0 auto; width:9px; height:9px; border-radius:50%;
+  background:var(--homok); margin-top:.6em;
+}
+/* ⚠ A NEM-lista pontja NEM kör, hanem VÍZSZINTES VONAL — mert ez a lista
+     tagadásokat sorol, és a jelentést ne csak a szöveg hordozza.
+     Fekete-fehéren is más, mint a fenti listák. */
+.nemlista li::before{
+  width:14px; height:3px; border-radius:2px; background:var(--piros);
+  margin-top:.85em;
+}
+
+/* ── kép ──────────────────────────────────────────────────────── */
+.termek figure{margin-top:22px}
+.termek img{
+  display:block; width:100%; height:auto;
+  border:1px solid var(--keret); border-radius:12px; background:#000;
+}
+.termek figcaption{color:var(--tompa); font-size:.85em; margin-top:8px}
+
+/* ── gomb és letöltés ─────────────────────────────────────────── */
+.gomb{
+  display:inline-block; margin-top:20px; padding:15px 28px;
+  background:var(--lila); color:#fff; text-decoration:none; border-radius:12px;
+  font-family:'Archivo',sans-serif; font-weight:600; font-size:.95em;
+  border:2px solid transparent;
+}
+.gomb:hover,.gomb:focus-visible{background:var(--melylila)}
+.gomb.szeles{display:block; text-align:center; margin-top:22px}
+@media (prefers-color-scheme: dark){
+  .gomb{color:#241B30}
+  .gomb:hover,.gomb:focus-visible{background:var(--homok)}
+}
+.email{font-family:'Archivo',sans-serif; font-weight:600; color:var(--lila); text-decoration:none; overflow-wrap:anywhere}
+.email:hover,.email:focus-visible{text-decoration:underline}
+
+/* ── lábléc ───────────────────────────────────────────────────── */
+footer{
+  margin-top:clamp(20px,5vw,34px); padding-top:26px;
+  border-top:1px solid var(--keret); text-align:center;
+  font-size:.85em; color:var(--tompa);
+}
+footer a{color:var(--lila)}
+footer p + p{margin-top:8px}
+
+/* ── a három nyelv ────────────────────────────────────────────────
+   JS NÉLKÜL MIND A HÁROM LÁTSZIK. A szűrést a body.szures kapcsolja be,
+   amit a szkript tesz rá — tehát ha a szkript nem fut, semmi nem tűnik el. */
+.nyelv + .nyelv{margin-top:clamp(50px,9vw,80px); padding-top:clamp(40px,8vw,64px); border-top:6px solid var(--keret)}
+body.szures .nyelv{display:none}
+body.szures .nyelv.aktiv{display:block}
+body.szures .nyelv + .nyelv{margin-top:0; padding-top:0; border-top:0}
+
+/* ── nyomtatás ────────────────────────────────────────────────────
+   ⚠ A kapcsolók nem mennek papírra, a dobozok nem törhetnek ketté,
+     és nyomtatásban MIND A HÁROM nyelv megjelenik, ha nem szűrt. */
+@media print{
+  body{background:#fff; color:#000; font-size:11.5pt; padding:0; display:block}
+  .vezerlok,.vissza{display:none}
+  .mag{max-width:none}
+  .termek{border-radius:0; box-shadow:none; page-break-inside:auto}
+  .doboz,figure,table{break-inside:avoid; page-break-inside:avoid}
+  h1,h2,h3{break-after:avoid; page-break-after:avoid}
+  a{color:#000}
+}
+</style>
+</head>
+<body>
+<main class="mag">
+
+  <!-- ⚠ MEGRAJZOLT zászlók, nem emoji: a Windows az emoji-zászlót nem
+       rajzolja ki, csak két betűt mutat helyette („HU"). -->
+  <div class="vezerlok">
+    <div class="nyelvek" role="group" aria-label="Nyelv / Sprache / Language">
+      <button type="button" data-nyelv="hu" aria-pressed="true">
+        <svg class="zaszlo" viewBox="0 0 60 30" aria-hidden="true">
+          <rect width="60" height="10" fill="#CE2939"/>
+          <rect y="10" width="60" height="10" fill="#FFFFFF"/>
+          <rect y="20" width="60" height="10" fill="#477050"/>
+        </svg>
+        <span>Magyar</span>
+      </button>
+      <button type="button" data-nyelv="de" aria-pressed="false">
+        <svg class="zaszlo" viewBox="0 0 60 30" aria-hidden="true">
+          <rect width="60" height="10" fill="#000000"/>
+          <rect y="10" width="60" height="10" fill="#DD0000"/>
+          <rect y="20" width="60" height="10" fill="#FFCE00"/>
+        </svg>
+        <span>Deutsch</span>
+      </button>
+      <button type="button" data-nyelv="en" aria-pressed="false">
+        <svg class="zaszlo" viewBox="0 0 60 30" aria-hidden="true">
+          <clipPath id="uk-negyed"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath>
+          <rect width="60" height="30" fill="#012169"/>
+          <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/>
+          <path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#uk-negyed)" stroke="#C8102E" stroke-width="4"/>
+          <path d="M30,0 V30 M0,15 H60" stroke="#fff" stroke-width="10"/>
+          <path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/>
+        </svg>
+        <span>English</span>
+      </button>
+    </div>
+    <div class="meret" role="group" aria-label="Betűméret / Schriftgröße / Text size">
+      <button type="button" data-meret="0" aria-pressed="false" aria-label="kisebb betű">A−</button>
+      <button type="button" data-meret="1" aria-pressed="true" aria-label="alap betűméret">A</button>
+      <button type="button" data-meret="2" aria-pressed="false" aria-label="nagyobb betű">A+</button>
+    </div>
+  </div>
+
+  <p class="vissza"><a href="./" id="vissza-link">← Vigyázok Rád</a></p>
+
+  <!-- A jel: egy ív, ami föléhajlik, és egy pont alatta. Véd, de nem zár körbe. -->
+  <svg class="jel" viewBox="0 0 100 100" role="img" aria-label="Vigyázok Rád">
+    <path d="M14 58A36 36 0 0 1 86 58" fill="none" stroke="var(--lila)"
+          stroke-linecap="round" stroke-linejoin="round" stroke-width="11"/>
+    <circle cx="50" cy="74" r="13" fill="var(--homok)"/>
+  </svg>
+  <p class="marka">Vigyázok Rád</p>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     MAGYAR
+     ══════════════════════════════════════════════════════════════════ -->
+<section class="nyelv aktiv" data-nyelv="hu" lang="hu">
+
+  <h1>Otthonoknak</h1>
+  <p class="mondat">Amit egy 15–25 szobás idősotthonnak építünk — és amit szándékosan nem.</p>
+
+  <p class="allapot">
+    <span><b>TERV.</b> Ez a lap egy készülő rendszert ír le, nem egy megvásárolható
+    terméket. Azért olvasható nyilvánosan, mert két otthon kérdezett rá, és mert
+    jobb, ha időben vitatkozik vele valaki, mint ha később derül ki, hogy rosszul
+    gondoltuk. Hogy pontosan mi működik ma, azt a <a href="#hol-tartunk-hu">Hol tartunk ma</a>
+    pont mondja meg.</span>
+  </p>
+
+  <p class="cimke">Mindenek előtt</p>
+  <section class="termek">
+    <h2>Ez nem nővérhívó rendszer</h2>
+
+    <div class="doboz fontos">
+      <p class="dcimke">Fontos — kérjük, ezt olvassák el először</p>
+      <p>Egy idősotthonnak <strong>rendes, tanúsított nővérhívó rendszerre</strong> van szüksége.</p>
+      <p>Ezt még az előtt mondjuk el, hogy bármit leírnánk arról, amit mi építünk, mert
+      minden további ezt feltételezi. <strong>A mi rendszerünk egy nővérhívó rendszer
+      MELLÉ készül, nem helyette.</strong> Nem lehet az egyetlen módja a segítségkérésnek,
+      és nem is szeretnénk, hogy az legyen.</p>
+      <p>Tanúsított rendszerek készen kaphatók bejáratott szállítóktól. Szívesen segítünk
+      összehasonlítani őket, és abban is, hogy a miénk szépen illeszkedjen ahhoz, amit
+      választanak — de mi nem építünk ilyet, és nem állítjuk, hogy amit építünk, az az.</p>
+    </div>
+
+    <p>Azért ez áll elöl, mert ez a lap legértékesebb mondata, és mert könnyű — és
+    helytelen — volna kihagyni. Innentől minden arról szól, amit egy tanúsított
+    nővérhívó <em>nem</em> csinál.</p>
+  </section>
+
+  <p class="cimke">Kiknek készül</p>
+  <section class="termek">
+    <h2>A kisebb házaknak</h2>
+    <p>Ez a csomag <strong>15–25 szobás, magánkezelésben lévő otthonoknak</strong> készül.
+    Nem véletlenül.</p>
+    <p>A nagy, intézményi rendszerek léteznek, jók, és drágák. Egy néhány tucat szobás
+    háznak viszont rendszerint olyasmit adnak el, amire nincs szüksége — olyan áron,
+    amit nem bír el. Így aztán a kisebb otthonok gyakran maradnak annál, ami majdnem
+    semmi: egy csengő, egy zsinór, egy walkie-talkie.</p>
+    <p>Néhány héten belül <strong>két ilyen ház</strong> kérdezett rá. Az egyikben
+    demenciával élő embereket gondoznak; a másikban olyan időseket, akik szellemileg
+    frissek, de magukat már nem tudják ellátni. <strong>Két majdnem ellentétes
+    feladat, ugyanazzal a hardverrel</strong> — erről szól a „Nem minden otthon
+    egyforma" pont.</p>
+    <div class="doboz jo">
+      <p class="dcimke">Amiért ez több, mint egy ötlet</p>
+      <p>Az egyik otthon felajánlotta, hogy <strong>tanácsokkal és tapasztalattal
+      segíti a fejlesztést</strong>. Ez többet ér minden specifikációnál, amit mi
+      magunktól kitalálnánk: ők tudják, mi történik hajnali háromkor egy folyosón,
+      mi nem.</p>
+    </div>
+  </section>
+
+  <p class="cimke">Amit építeni szeretnénk</p>
+  <section class="termek">
+    <h2>Négy darab, egy rendszer</h2>
+
+    <div class="tablaburok">
+    <table>
+      <tr><th>Hol</th><th>Mi</th></tr>
+      <tr><td><strong>Minden szobában</strong></td><td>Fali konzol egyetlen nagy segítség-gombbal. Igény szerint hordozható vagy távirányítós gomb, ami egy idős embernek gyakran könnyebb, mint egy falra szerelt panel.</td></tr>
+      <tr><td><strong>Minden szobában</strong></td><td>Gyógyszer-visszaigazoló gomb, és mögötte a napló.</td></tr>
+      <tr><td><strong>A nővérpultnál</strong></td><td>Nagy képernyőn futó program, amely egyszerre mutatja az összes szobát, hanggal. Akár több pultnál is.</td></tr>
+      <tr><td><strong>Valahol az épületben</strong></td><td>Egyetlen kis számítógép, amely a naplót őrzi. Az épületből semmi nem megy ki.</td></tr>
+    </table>
+    </div>
+
+    <div class="doboz jo">
+      <p class="dcimke">Egy tervezési döntés, amit érdemes tudni</p>
+      <p>Ha több nővérpult van, <strong>egyik állomás sem lehet a főnök.</strong> A napló
+      egy helyen él — a kis számítógépen —, és minden állomás csak ablak rá. Különben a
+      képernyők lassan eltérnek egymástól, és senki nem tudja megmondani, melyiknek van igaza.</p>
+    </div>
+  </section>
+
+  <p class="cimke">A gyógyszer-napló</p>
+  <section class="termek">
+    <h2>Itt a leghasznosabb — és itt lehetne a legkönnyebben elrontani</h2>
+
+    <p>Minden beadás négy dolgot rögzít: <strong>melyik lakó</strong>,
+    <strong>melyik kör</strong> (például a 08:00-s), <strong>melyik dolgozó igazolta
+    vissza</strong>, és <strong>pontosan mikor nyomták meg a gombot</strong>.</p>
+
+    <h3>A szóhasználat többet számít, mint amennyinek látszik</h3>
+
+    <div class="doboz fontos">
+      <p class="dcimke">Fontos — mit állít és mit nem állít a rendszer</p>
+      <p>A rendszer <strong>soha</strong> nem írja ki, hogy „a gyógyszer be lett adva",
+      mert ezt nem tudja. Azt tudja, hogy valaki megnyomott egy gombot.</p>
+      <p>Ezért a képernyőn ez áll: <strong>„08:12 — visszaigazolta: …"</strong>, vagy
+      <strong>„nincs visszaigazolás"</strong>. Az első a saját naplónkról szóló állítás,
+      és mindig igaz. A másik fajta megfogalmazás — állítás arról, hogy mi történt
+      valójában a szobában — az, amelyik kárt okoz, ha tévesnek bizonyul.</p>
+    </div>
+
+    <h3>A naplóhoz hozzáírunk, soha nem írjuk át</h3>
+    <p>A gyógyszer-napló <strong>csak bővíthető</strong>: a bejegyzéseket soha nem
+    szerkesztjük és nem töröljük. Ha valamit tévesen rögzítettek, a javítás
+    <em>új bejegyzésként</em> kerül be, és mindkettő látható marad a saját időpontjával.
+    A klinikai nyilvántartások így működnek, és éppen ez teszi egyáltalán érdemessé a
+    naplót a vezetésre.</p>
+
+    <h3>Hogyan azonosítja magát a dolgozó</h3>
+    <p>A javaslatunk a <strong>koppintós kulcstartó</strong> — ugyanolyan, amilyet az
+    ajtókhoz amúgy is hordanak. Két másodperc, nincs elfelejthető vagy továbbadható
+    jelszó, és kesztyűben is működik.</p>
+
+    <div class="doboz megjegyzes">
+      <p class="dcimke">Megjegyzés — őszintén arról, mit bizonyít egy kulcstartó</p>
+      <p>Egy kulcstartót kölcsön lehet adni vagy ott lehet felejteni az asztalon. Ezért a
+      napló helyesen azt mondja: <strong>„a 7-es kulcstartót koppintották"</strong>, nem
+      azt, hogy „X nővér ott volt". A gyakorlatban ez elég, és összehasonlíthatatlanul
+      jobb, mint egy olvashatatlan szignó a papíron — de a saját szabályzatukban pontosan
+      így érdemes leírni.</p>
+    </div>
+
+    <h3>Két gyakorlati dolog</h3>
+    <ul>
+      <li><span><strong>Az óra.</strong> Egy időbélyeg semmit nem ér, ha rossz az óra.
+      A rendszer magától szinkronban tartja az idejét, és a napló mutatja, mikor
+      ellenőrizte utoljára.</span></li>
+      <li><span><strong>Ha nincs hálózat.</strong> A konzol helyben rögzít, és elküldi,
+      amint a hálózat visszajön — a bejegyzés pedig <strong>jelölve lesz, hogy később
+      érkezett</strong>, hogy senkinek ne kelljen találgatnia.</span></li>
+    </ul>
+
+    <div class="doboz jo">
+      <p class="dcimke">Ez a dolgozókért van, nem ellenük</p>
+      <p>A személyzet gyakran úgy várja az ilyen rendszert, hogy a lebuktatásukra készül.
+      A gyakorlatban ennek az ellenkezője igaz: ha hetekkel később kérdés merül fel, épp
+      az időbélyeges napló mutatja meg, hogy a kör megtörtént.
+      <strong>A papír sokkal gyakrabban hagyja cserben a nővért, mint a vezetőt.</strong></p>
+    </div>
+  </section>
+
+  <p class="cimke">Amit NEM csinál</p>
+  <section class="termek">
+    <h2>Inkább most legyünk világosak</h2>
+    <ul class="nemlista">
+      <li><span><strong>Nem nővérhívó rendszer</strong>, és nem is szabad annak használni.</span></li>
+      <li><span><strong>Nem orvostechnikai eszköz.</strong> Nem adagol, nem mér, nem diagnosztizál és nem dönt el semmit.</span></li>
+      <li><span><strong>Nem helyettesíti a gyógyszerkört</strong> és nem helyettesíti a nővér ítéletét. Napló és emlékeztető.</span></li>
+      <li><span><strong>Nem figyeli a lakókat.</strong> Nincs kamera és nincs mikrofon.</span></li>
+      <li><span><strong>Nem életvédelmi rendszer</strong>, és ezt senkinek nem szabad másként mondani.</span></li>
+    </ul>
+  </section>
+
+  <p class="cimke">A szabály, ami szerint építjük</p>
+  <section class="termek">
+    <h2>A csend nem jelent biztonságot</h2>
+
+    <div class="doboz fontos">
+      <p class="dcimke">Fontos — amire támaszkodhatnak, annak bizonyítania kell, hogy él</p>
+      <p>Egy tanúsított nővérhívó figyeli a saját vezetékeit: ha elvágják, riaszt. A miénk
+      ennek a szoftveres megfelelőjét teszi — <strong>minden konzol folyamatosan
+      jelentkezik</strong>, és ha egy elhallgat, a nővérpult ezt kimondja: szavakkal és
+      hangosan.</p>
+      <p><strong>A csend soha nem látszhat úgy, mintha minden rendben volna.</strong>
+      Ez az egész terv legfontosabb szabálya, és ez az oka annak, hogy a rendszert
+      egyáltalán fel merjük ajánlani.</p>
+    </div>
+
+    <p>Ehhez tartozik egy állandó szabályunk minden munkánkban: <strong>a szín soha nem az
+    egyetlen jelzés</strong>. Ami fontos, az szövegként és alakként is megjelenik, hogy a
+    színtévesztőnek is olvasható legyen, és annak is, aki a folyosó túlsó végéről néz oda.
+    Ez a lap is így készült.</p>
+  </section>
+
+  <p class="cimke">Nem minden otthon egyforma</p>
+  <section class="termek">
+    <h2>Két ház, két majdnem ellentétes feladat</h2>
+
+    <p>Ez az a rész, ahol <strong>nekünk sokkal nagyobb szükségünk van az otthonok
+    tudására, mint nekik a miénkre</strong>. Az alábbiakat kérjük kiinduló feltevésnek
+    tekinteni, nem specifikációnak.</p>
+
+    <div class="doboz jo">
+      <p class="dcimke">A legfontosabb, amit úgy hisszük, értünk</p>
+      <p>Egy demenciával élő ember gyakran <strong>nem tud segítséget kérni</strong> — nem
+      azért, mert nem éri el a gombot, hanem mert nem jut eszébe, hogy van. Ezért az
+      értékes jel sokszor épp valaminek a <em>hiánya</em>: nincs visszaigazolás, nincs
+      mozgás, hajnali háromkor kinyílik egy ajtó.</p>
+      <p>Ettől lesz ez más termék, mint a „nyomd meg a gombot és jön a nővér" — és ezért
+      érdekel minket a feladat.</p>
+    </div>
+
+    <h3>Ahol demenciával élnek</h3>
+    <ul>
+      <li><span><strong>A szobai képernyő a lehető legkevesebbet mutassa.</strong> Egy gomb.
+      Semmi változó szöveg, semmi állapot-ikon, semmi verziószám — a változó képernyő
+      zavart okoz. Minden diagnosztika a nővérpultra való.</span></li>
+      <li><span><strong>Az éjszaka más.</strong> A képernyő nem világíthatja be a
+      hálószobát. Alapból teljesen sötét lenne éjjel, miközben a gomb továbbra is
+      működik.</span></li>
+      <li><span><strong>A konzolt elérni lehessen, letépni ne.</strong> A szerelési
+      magasságot és a rögzítést a helyszínen, közösen érdemes eldönteni.</span></li>
+    </ul>
+
+    <h3>Ahol a lakók szellemileg frissek</h3>
+    <ul>
+      <li><span><strong>Ők többet akarnak, nem kevesebbet.</strong> Ugyanaz a konzol tud
+      nekik üzenetet, időpontot és emlékeztetőt mutatni, és van rajta egy „Jól vagyok"
+      csempe is.</span></li>
+      <li><span><strong>A magánélet itt súlyosabb kérdés.</strong> Aki tisztán gondolkodik,
+      annak joga van tudni, mit rögzít a rendszer róla — és joga van nemet mondani rá.</span></li>
+      <li><span><strong>Ugyanaz a hardver, másik beállítás.</strong> Ez a terv szíve: nem
+      két termék, hanem egy, amit a ház állít be magának.</span></li>
+    </ul>
+  </section>
+
+  <p class="cimke">A nővérpult képernyője</p>
+  <section class="termek" id="kozpont-hu">
+    <h2>Segítség Központ — most kezdtük el</h2>
+
+    <p>A rendszer másik fele az a képernyő, ami a pulton áll. Ma ennyi van belőle: egy
+    program, amely <strong>magától megtalálja a ház konzoljait a hálózaton</strong>,
+    mindegyikről megmutatja, hogy él-e, milyen erős a jele és melyik változat fut rajta —
+    és <strong>egy gombnyomással frissíteni tudja őket, kábel nélkül</strong>.</p>
+
+    <div class="doboz megjegyzes">
+      <p class="dcimke">Megjegyzés — a verziószám szándékosan van kiírva</p>
+      <p>A képen <strong>0.0.1</strong> áll. Ez az első működő darab, nem a kész képernyő.
+      Nagyságrendekkel többet fog tudni ennél: minden szoba egy csempén, riasztás hanggal,
+      a gyógyszerkör állapota, és a néma konzol kimondva. Azért mutatjuk meg mégis
+      így, mert ez van, és mert a félkész dolgot félkészként megmutatni tisztességesebb,
+      mint egy látványtervet mutatni késznek.</p>
+    </div>
+
+    <figure>
+      <img src="kep/kozpont-ket-konzol.jpg" width="1280" height="857" loading="lazy"
+           alt="Egy monitoron a Segítség Központ nevű program, 0.0.1-es verzió. A fejléce szerint két konzolt talált. Két kártya látszik egymás mellett: „Iroda – 0001” és „Betegszoba – 0002”, mindkettőn a hálózati név, a jelerősség, az üzemidő és a rajta futó firmware verziószáma, valamint egy Frissítés gomb. Alul naplósorok mutatják, ahogy a program felderíti a két konzolt. A monitor előtt ott áll a két igazi fali konzol: lila képernyő, rajta felül a helyiség neve, két csempe — „Jól vagyok” és „Villany KI” —, és legalul egy nagy, piros SEGÍTSÉG gomb.">
+      <figcaption>A pult programja és a két konzol, amit lát. A képernyőn lévő apró
+      szöveget nem kell kibetűzni: amit mutat, azt a fenti bekezdés is elmondja.</figcaption>
+    </figure>
+
+    <h3>És ami ezen túl van</h3>
+    <p>Ugyanennek a nézetnek van egy sokkal nagyobb változata is, amely nem egy házat, hanem
+    sok házat követ egyszerre, akár országos szinten. Az ilyen rendszerek léteznek. De a
+    tapasztalatunk eddig inkább azt mondja, hogy <strong>a valódi hiány nem ott van</strong>:
+    a 15–25 szobás házaknak ma nincs kihez fordulniuk. Ezért kezdjük a helyi csomaggal.</p>
+  </section>
+
+  <p class="cimke">Hol tartunk ma</p>
+  <section class="termek" id="hol-tartunk-hu">
+    <h2>Becsületesen arról, mi kész és mi nincs</h2>
+
+    <h3>Ami ma él, és le van mérve</h3>
+    <ul>
+      <li><span>A fali konzol: nagy <strong>SEGÍTSÉG</strong> gomb, két csempe, saját hálózati név.</span></li>
+      <li><span>A konzolok szólnak egymásnak: a hívás megjelenik a másik szobában, és a
+      <strong>„Jövök!"</strong> válasz visszaér a hívóhoz. Két igazi panellal mérve:
+      <strong>tíz másodperc</strong>.</span></li>
+      <li><span>Frissítés a hálózaton keresztül, kábel nélkül — és ha egy frissítés rosszul
+      sülne el, az eszköz <strong>magától visszaáll</strong> az előző, működő változatra.</span></li>
+      <li><span>A Segítség Központ <strong>0.0.1</strong>: felderítés és frissítés.</span></li>
+    </ul>
+
+    <h3>Ami még nincs meg</h3>
+    <ul>
+      <li><span>A gyógyszer-napló és a kulcstartós azonosítás.</span></li>
+      <li><span>A nővérpult teljes képernyője és a hangjelzés.</span></li>
+      <li><span>A kis számítógép, ami a naplót őrzi.</span></li>
+      <li><span>Bármilyen telepítés éles otthonban. <strong>Ez még nem történt meg.</strong></span></li>
+    </ul>
+
+    <div class="doboz fontos">
+      <p class="dcimke">Fontos — miért egyetlen szoba lesz az első</p>
+      <p>Amikor eljön az első telepítés, az <strong>egyetlen szobával</strong> kezdődik,
+      nem tizenöttel. Egy szoba, néhány hét, és utána kérdések — mielőtt bárhol máshol
+      furnánk a falba. Aki ennél gyorsabbat ígér, az nem az otthon érdekét nézi.</p>
+    </div>
+  </section>
+
+  <p class="cimke">Vigyük magunkkal</p>
+  <section class="termek">
+    <h2>Rövid ismertető, két oldalon</h2>
+    <p>Ugyanez a terv egy lapra fogva, kinyomtatható formában — ha valakinek papíron kell
+    megmutatni, vagy egy megbeszélésre elvinni.</p>
+    <a class="gomb szeles" href="prospektus/vigyazokrad-otthonoknak-hu.pdf" download
+       id="letoltes-hu">Ismertető letöltése — PDF, 240 kB, 2 oldal</a>
+  </section>
+
+  <section class="termek">
+    <h2>Ha van véleménye róla</h2>
+    <p>Ezt a lapot azért tettük ki, hogy vitatkozzanak vele. Ha egy otthont vezet, ott
+    dolgozik, vagy hozzátartozóként ismeri belülről: <strong>minden ellenvetés hasznosabb
+    most, mint később.</strong></p>
+    <p style="margin-top:16px">Írjon nekünk:
+      <a class="email" href="mailto:info@vigyazokrad.hu">info@vigyazokrad.hu</a></p>
+  </section>
+
+  <footer>
+    <p><a href="./">Vissza a főoldalra</a></p>
+    <p>Kürtösi Péter · Vigyázok Rád</p>
+  </footer>
+
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     DEUTSCH
+     ══════════════════════════════════════════════════════════════════ -->
+<section class="nyelv" data-nyelv="de" lang="de">
+
+  <h1>Für Pflegeheime</h1>
+  <p class="mondat">Was wir für ein Haus mit 15–25 Zimmern bauen — und was bewusst nicht.</p>
+
+  <p class="allapot">
+    <span><b>ENTWURF.</b> Diese Seite beschreibt ein System im Aufbau, kein Produkt,
+    das man kaufen kann. Sie ist öffentlich, weil zwei Häuser danach gefragt haben —
+    und weil Widerspruch heute mehr wert ist als eine späte Erkenntnis. Was heute
+    tatsächlich läuft, steht unter <a href="#hol-tartunk-de">Wo wir heute stehen</a>.</span>
+  </p>
+
+  <p class="cimke">Zuallererst</p>
+  <section class="termek">
+    <h2>Das ist keine Schwesternrufanlage</h2>
+
+    <div class="doboz fontos">
+      <p class="dcimke">Wichtig — bitte zuerst lesen</p>
+      <p>Ein Pflegeheim benötigt eine <strong>ordentliche, zertifizierte
+      Schwesternrufanlage</strong>.</p>
+      <p>Wir sagen das, bevor wir irgendetwas über unser eigenes System schreiben, denn
+      alles Weitere setzt es voraus. <strong>Unser System ist dafür gebaut, NEBEN einer
+      Schwesternrufanlage zu arbeiten, nicht an ihrer Stelle.</strong> Es darf nicht der
+      einzige Weg sein, Hilfe zu rufen, und wir möchten auch nicht, dass es das wird.</p>
+      <p>Zertifizierte Anlagen sind bei etablierten Anbietern fertig erhältlich. Wir helfen
+      gern beim Vergleich und sorgen dafür, dass unser System sauber daneben passt — aber
+      wir bauen keine solche Anlage, und wir behaupten nicht, dass unsere eine wäre.</p>
+    </div>
+
+    <p>Das steht deshalb ganz vorn, weil es der wertvollste Satz dieser Seite ist und weil
+    es leicht — und falsch — wäre, ihn wegzulassen. Alles Weitere handelt davon, was eine
+    zertifizierte Schwesternrufanlage <em>nicht</em> leistet.</p>
+  </section>
+
+  <p class="cimke">Für wen</p>
+  <section class="termek">
+    <h2>Für die kleineren Häuser</h2>
+    <p>Dieses Paket ist für <strong>privat geführte Häuser mit 15–25 Zimmern</strong>
+    gedacht. Das hat einen Grund.</p>
+    <p>Die großen, institutionellen Systeme gibt es, sie sind gut, und sie sind teuer.
+    Einem Haus mit ein paar Dutzend Zimmern verkauft man dabei meist etwas, das es nicht
+    braucht — zu einem Preis, den es nicht trägt. Und so bleiben kleinere Heime oft bei
+    dem, was fast nichts ist: eine Klingel, eine Zugschnur, ein Funkgerät.</p>
+    <p>Innerhalb weniger Wochen haben <strong>zwei solche Häuser</strong> nachgefragt. In
+    dem einen werden Menschen mit Demenz betreut; im anderen ältere Menschen, die geistig
+    klar sind, sich aber nicht mehr selbst versorgen können. <strong>Zwei fast
+    gegensätzliche Aufgaben, mit derselben Hardware</strong> — davon handelt der Abschnitt
+    „Kein Haus ist wie das andere".</p>
+    <div class="doboz jo">
+      <p class="dcimke">Warum das mehr ist als eine Idee</p>
+      <p>Eines der Häuser hat angeboten, die Entwicklung <strong>mit Rat und Erfahrung zu
+      begleiten</strong>. Das ist mehr wert als jede Spezifikation, die wir uns selbst
+      ausdenken könnten: Sie wissen, was um drei Uhr nachts auf einem Flur geschieht.
+      Wir nicht.</p>
+    </div>
+  </section>
+
+  <p class="cimke">Was wir bauen möchten</p>
+  <section class="termek">
+    <h2>Vier Teile, ein System</h2>
+
+    <div class="tablaburok">
+    <table>
+      <tr><th>Wo</th><th>Was</th></tr>
+      <tr><td><strong>In jedem Zimmer</strong></td><td>Eine Wandkonsole mit einer großen Hilfetaste. Auf Wunsch zusätzlich eine tragbare Taste oder ein Funktaster — für ältere Menschen oft leichter als ein Panel an der Wand.</td></tr>
+      <tr><td><strong>In jedem Zimmer</strong></td><td>Eine Bestätigungstaste für Medikamente und die Dokumentation dahinter.</td></tr>
+      <tr><td><strong>Am Schwesternplatz</strong></td><td>Ein Programm auf einem großen Bildschirm, das alle Zimmer gleichzeitig zeigt, mit Ton. Auch an mehreren Plätzen.</td></tr>
+      <tr><td><strong>Irgendwo im Haus</strong></td><td>Ein kleiner Rechner, der die Dokumentation speichert. Nichts verlässt das Gebäude.</td></tr>
+    </table>
+    </div>
+
+    <div class="doboz jo">
+      <p class="dcimke">Eine Entwurfsentscheidung, die Sie kennen sollten</p>
+      <p>Bei mehreren Schwesternplätzen darf <strong>keine der Stationen die führende
+      sein.</strong> Die Dokumentation liegt an einer Stelle — auf dem kleinen Rechner —,
+      und jede Station ist nur ein Fenster darauf. Sonst laufen die Bildschirme langsam
+      auseinander, und niemand kann sagen, welcher recht hat.</p>
+    </div>
+  </section>
+
+  <p class="cimke">Die Medikamenten-Dokumentation</p>
+  <section class="termek">
+    <h2>Hier ist das System am nützlichsten — und hier ließe es sich am leichtesten falsch machen</h2>
+
+    <p>Jede Gabe erfasst vier Dinge: <strong>welche Bewohnerin oder welcher
+    Bewohner</strong>, <strong>welcher Durchgang</strong> (zum Beispiel der um 08:00 Uhr),
+    <strong>welche Mitarbeiterin oder welcher Mitarbeiter bestätigt hat</strong> und
+    <strong>der genaue Zeitpunkt des Tastendrucks</strong>.</p>
+
+    <h3>Die Wortwahl zählt mehr, als es aussieht</h3>
+
+    <div class="doboz fontos">
+      <p class="dcimke">Wichtig — was das System behauptet und was nicht</p>
+      <p>Das System zeigt <strong>niemals</strong> „Medikament eingenommen" an, denn das
+      weiß es nicht. Es weiß, dass jemand eine Taste gedrückt hat.</p>
+      <p>Deshalb steht auf dem Bildschirm: <strong>„08:12 — bestätigt von …"</strong> oder
+      <strong>„nicht bestätigt"</strong>. Das Erste ist eine Aussage über unsere eigene
+      Dokumentation und ist immer wahr. Die andere Art der Formulierung — eine Behauptung
+      darüber, was im Zimmer tatsächlich geschehen ist — richtet Schaden an, wenn sie sich
+      als falsch erweist.</p>
+    </div>
+
+    <h3>Es wird ergänzt, nie geändert</h3>
+    <p>Die Medikamenten-Dokumentation ist <strong>nur erweiterbar</strong>: Einträge werden
+    nie bearbeitet und nie gelöscht. Wurde etwas falsch erfasst, wird die Korrektur
+    <em>als neuer Eintrag hinzugefügt</em>, und beide bleiben mit ihren Zeiten sichtbar.
+    So arbeiten klinische Aufzeichnungen, und genau das macht eine Dokumentation überhaupt
+    erst wertvoll.</p>
+
+    <h3>Wie sich Mitarbeitende ausweisen</h3>
+    <p>Wir empfehlen einen <strong>Transponder zum Auflegen</strong> — dieselbe Art
+    Schlüsselanhänger, den Ihre Mitarbeitenden ohnehin für Türen tragen. Zwei Sekunden,
+    kein Passwort zum Vergessen oder Weitergeben, und er funktioniert auch mit Handschuhen.</p>
+
+    <div class="doboz megjegyzes">
+      <p class="dcimke">Hinweis — was ein Transponder ehrlicherweise beweist</p>
+      <p>Ein Transponder kann verliehen oder auf dem Tisch liegen gelassen werden. Deshalb
+      sagt die Dokumentation korrekt: <strong>„Transponder 7 wurde aufgelegt"</strong>,
+      nicht „Schwester X war anwesend". In der Praxis genügt das und ist weit besser als
+      ein unleserliches Kürzel auf Papier — in Ihren eigenen Verfahrensanweisungen sollte
+      es aber genau so beschrieben werden.</p>
+    </div>
+
+    <h3>Zwei praktische Punkte</h3>
+    <ul>
+      <li><span><strong>Die Uhr.</strong> Ein Zeitstempel ist wertlos, wenn die Uhr falsch
+      geht. Das System hält seine Zeit automatisch synchron, und die Dokumentation zeigt,
+      wann die Zeit zuletzt geprüft wurde.</span></li>
+      <li><span><strong>Wenn das Netz ausfällt.</strong> Die Konsole erfasst lokal und
+      sendet nach, sobald das Netz zurück ist — der Eintrag wird <strong>als verspätet
+      eingegangen gekennzeichnet</strong>, damit niemand raten muss.</span></li>
+    </ul>
+
+    <div class="doboz jo">
+      <p class="dcimke">Das ist für Ihre Mitarbeitenden, nicht gegen sie</p>
+      <p>Personal erwartet von solchen Systemen oft, dass sie dem Ertappen dienen. In der
+      Praxis ist das Gegenteil der Fall: Wenn Wochen später Fragen aufkommen, ist es gerade
+      die Dokumentation mit Zeitstempel, die zeigt, dass der Durchgang stattgefunden hat.
+      <strong>Papier lässt Pflegekräfte weit häufiger im Stich als die Leitung.</strong></p>
+    </div>
+  </section>
+
+  <p class="cimke">Was es NICHT tut</p>
+  <section class="termek">
+    <h2>Lieber jetzt deutlich als später missverstanden</h2>
+    <ul class="nemlista">
+      <li><span>Es ist <strong>keine Schwesternrufanlage</strong> und darf auch nicht als solche verwendet werden.</span></li>
+      <li><span>Es ist <strong>kein Medizinprodukt.</strong> Es dosiert nicht, misst nicht, diagnostiziert nicht und entscheidet nichts.</span></li>
+      <li><span>Es <strong>ersetzt weder den Medikamentendurchgang</strong> noch das Urteil einer Pflegekraft. Es ist Dokumentation und Erinnerung.</span></li>
+      <li><span>Es <strong>beobachtet keine Bewohner.</strong> Es gibt keine Kameras und keine Mikrofone.</span></li>
+      <li><span>Es ist <strong>kein System der Lebenssicherheit</strong>, und niemandem darf etwas anderes gesagt werden.</span></li>
+    </ul>
+  </section>
+
+  <p class="cimke">Die Regel, nach der wir bauen</p>
+  <section class="termek">
+    <h2>Stille bedeutet nicht Sicherheit</h2>
+
+    <div class="doboz fontos">
+      <p class="dcimke">Wichtig — worauf man sich verlassen könnte, muss beweisen, dass es lebt</p>
+      <p>Eine zertifizierte Schwesternrufanlage überwacht ihre eigene Verkabelung: Wird ein
+      Kabel durchtrennt, schlägt sie Alarm. Unsere leistet das Gleiche in Software —
+      <strong>jede Konsole meldet sich fortlaufend</strong>, und wenn eine verstummt, sagt
+      es der Schwesternplatz deutlich, in Worten und hörbar.</p>
+      <p><strong>Stille darf niemals so aussehen wie „alles in Ordnung".</strong> Das ist
+      die wichtigste Regel des gesamten Entwurfs, und sie ist der Grund, warum wir das
+      System überhaupt anbieten können.</p>
+    </div>
+
+    <p>Dazu gehört eine feste Regel in allem, was wir bauen: <strong>Farbe ist niemals das
+    einzige Signal</strong>. Alles Wichtige erscheint auch als Text und als Form, damit es
+    für farbenblinde Menschen lesbar bleibt — und für jemanden, der vom anderen Ende des
+    Flurs hinsieht. Auch diese Seite ist so gebaut.</p>
+  </section>
+
+  <p class="cimke">Kein Haus ist wie das andere</p>
+  <section class="termek">
+    <h2>Zwei Häuser, zwei fast gegensätzliche Aufgaben</h2>
+
+    <p>Das ist der Teil, in dem <strong>wir das Wissen der Häuser weit dringender brauchen
+    als sie unseres</strong>. Bitte betrachten Sie das Folgende als Ausgangsannahmen, nicht
+    als Spezifikation.</p>
+
+    <div class="doboz jo">
+      <p class="dcimke">Das Wichtigste, das wir zu verstehen glauben</p>
+      <p>Ein Mensch mit Demenz kann oft <strong>nicht um Hilfe rufen</strong> — nicht weil
+      die Taste unerreichbar wäre, sondern weil ihm nicht einfällt, dass es sie gibt.
+      Deshalb ist das wertvolle Signal häufig das <em>Ausbleiben</em> von etwas: keine
+      Bestätigung, keine Bewegung, eine Tür, die um drei Uhr nachts aufgeht.</p>
+      <p>Das macht daraus ein anderes Produkt als „Taste drücken, Pflegekraft kommt" — und
+      deshalb interessiert uns die Aufgabe.</p>
+    </div>
+
+    <h3>Wo Menschen mit Demenz leben</h3>
+    <ul>
+      <li><span><strong>Der Bildschirm im Zimmer zeigt so wenig wie möglich.</strong> Eine
+      Taste. Kein wechselnder Text, keine Statussymbole, keine Versionsnummern — ein
+      wechselnder Bildschirm verunsichert. Alles Diagnostische gehört an den
+      Schwesternplatz.</span></li>
+      <li><span><strong>Die Nacht ist anders.</strong> Ein Bildschirm darf ein Schlafzimmer
+      nicht erhellen. Voreinstellung: nachts vollständig dunkel, die Taste bleibt
+      aktiv.</span></li>
+      <li><span><strong>Die Konsole muss erreichbar, aber nicht abreißbar sein.</strong>
+      Montagehöhe und Befestigung entscheiden wir am besten gemeinsam vor Ort.</span></li>
+    </ul>
+
+    <h3>Wo die Bewohner geistig klar sind</h3>
+    <ul>
+      <li><span><strong>Sie wollen mehr, nicht weniger.</strong> Dieselbe Konsole kann ihnen
+      Nachrichten, Termine und Erinnerungen zeigen, und sie hat eine Kachel „Mir geht es
+      gut".</span></li>
+      <li><span><strong>Privatsphäre wiegt hier schwerer.</strong> Wer klar denkt, hat ein
+      Recht darauf zu wissen, was das System über ihn festhält — und ein Recht, Nein zu
+      sagen.</span></li>
+      <li><span><strong>Dieselbe Hardware, andere Einstellung.</strong> Das ist der Kern des
+      Entwurfs: nicht zwei Produkte, sondern eines, das sich das Haus selbst
+      einstellt.</span></li>
+    </ul>
+  </section>
+
+  <p class="cimke">Der Bildschirm am Schwesternplatz</p>
+  <section class="termek" id="kozpont-de">
+    <h2>Segítség Központ — gerade erst begonnen</h2>
+
+    <p>Die andere Hälfte des Systems ist der Bildschirm am Schwesternplatz. Heute gibt es
+    davon so viel: ein Programm, das <strong>die Konsolen des Hauses im Netzwerk von selbst
+    findet</strong>, zu jeder anzeigt, ob sie lebt, wie stark ihr Funksignal ist und welche
+    Version auf ihr läuft — und sie <strong>auf Tastendruck aktualisiert, ohne
+    Kabel</strong>.</p>
+
+    <div class="doboz megjegyzes">
+      <p class="dcimke">Hinweis — die Versionsnummer steht absichtlich da</p>
+      <p>Auf dem Bild steht <strong>0.0.1</strong>. Das ist das erste lauffähige Stück,
+      nicht der fertige Bildschirm. Er wird um Größenordnungen mehr können: jedes Zimmer
+      als Kachel, Alarm mit Ton, der Stand des Medikamentendurchgangs, und die verstummte
+      Konsole ausgesprochen. Wir zeigen es trotzdem so, weil es das ist, was existiert —
+      und weil Halbfertiges als halbfertig zu zeigen redlicher ist, als eine Designstudie
+      für fertig auszugeben.</p>
+    </div>
+
+    <figure>
+      <img src="kep/kozpont-ket-konzol.jpg" width="1280" height="857" loading="lazy"
+           alt="Auf einem Monitor läuft das Programm „Segítség Központ“ in Version 0.0.1. Laut Kopfzeile hat es zwei Konsolen gefunden. Nebeneinander zwei Karten: „Iroda – 0001“ und „Betegszoba – 0002“, jeweils mit Netzwerknamen, Signalstärke, Laufzeit und der Version der laufenden Firmware sowie einer Schaltfläche zum Aktualisieren. Unten zeigen Protokollzeilen, wie das Programm die beiden Konsolen entdeckt. Vor dem Monitor stehen die beiden echten Wandkonsolen: violetter Bildschirm, oben der Name des Zimmers, zwei Kacheln — „Mir geht es gut“ und „Licht AUS“ — und unten eine große rote HILFE-Taste.">
+      <figcaption>Das Programm am Platz und die beiden Konsolen, die es sieht. Die kleine
+      Schrift auf dem Bildschirm muss niemand entziffern: Was sie zeigt, steht auch im
+      Absatz darüber.</figcaption>
+    </figure>
+
+    <h3>Und was darüber hinausgeht</h3>
+    <p>Von derselben Ansicht gibt es auch eine weit größere Variante, die nicht ein Haus,
+    sondern viele Häuser gleichzeitig verfolgt, bis hin zur landesweiten Ebene. Solche
+    Systeme existieren. Unsere bisherige Erfahrung sagt aber eher, dass
+    <strong>die eigentliche Lücke woanders liegt</strong>: Häuser mit 15–25 Zimmern haben
+    heute niemanden, an den sie sich wenden können. Deshalb beginnen wir mit dem lokalen
+    Paket.</p>
+  </section>
+
+  <p class="cimke">Wo wir heute stehen</p>
+  <section class="termek" id="hol-tartunk-de">
+    <h2>Ehrlich dazu, was fertig ist und was nicht</h2>
+
+    <h3>Was heute läuft und gemessen ist</h3>
+    <ul>
+      <li><span>Die Wandkonsole: große <strong>HILFE</strong>-Taste, zwei Kacheln, eigener Netzwerkname.</span></li>
+      <li><span>Die Konsolen sprechen miteinander: Der Ruf erscheint im anderen Zimmer, und
+      die Antwort <strong>„Ich komme!"</strong> kommt beim Rufenden an. Mit zwei echten
+      Panels gemessen: <strong>zehn Sekunden</strong>.</span></li>
+      <li><span>Aktualisierung über das Netzwerk, ohne Kabel — und sollte eine
+      Aktualisierung schiefgehen, kehrt das Gerät <strong>von selbst</strong> zur vorigen,
+      funktionierenden Version zurück.</span></li>
+      <li><span>Das Segítség Központ in <strong>0.0.1</strong>: Suchen und Aktualisieren.</span></li>
+    </ul>
+
+    <h3>Was noch fehlt</h3>
+    <ul>
+      <li><span>Die Medikamenten-Dokumentation und der Transponder.</span></li>
+      <li><span>Der vollständige Bildschirm am Schwesternplatz und der Ton.</span></li>
+      <li><span>Der kleine Rechner, der die Dokumentation speichert.</span></li>
+      <li><span>Jede Installation in einem echten Haus. <strong>Das ist noch nicht geschehen.</strong></span></li>
+    </ul>
+
+    <div class="doboz fontos">
+      <p class="dcimke">Wichtig — warum zuerst ein einziges Zimmer</p>
+      <p>Wenn die erste Installation kommt, beginnt sie mit <strong>einem einzigen
+      Zimmer</strong>, nicht mit fünfzehn. Ein Zimmer, ein paar Wochen, danach Fragen —
+      bevor irgendwo sonst in eine Wand gebohrt wird. Wer Schnelleres verspricht, denkt
+      nicht an das Haus.</p>
+    </div>
+  </section>
+
+  <p class="cimke">Zum Mitnehmen</p>
+  <section class="termek">
+    <h2>Kurzfassung auf zwei Seiten</h2>
+    <p>Derselbe Entwurf auf einem Blatt, zum Ausdrucken — falls jemand es auf Papier zeigen
+    oder zu einer Besprechung mitnehmen möchte.</p>
+    <a class="gomb szeles" href="prospektus/vigyazokrad-otthonoknak-de.pdf" download
+       id="letoltes-de">Kurzfassung herunterladen — PDF, 242 kB, 2 Seiten</a>
+  </section>
+
+  <section class="termek">
+    <h2>Wenn Sie eine Meinung dazu haben</h2>
+    <p>Diese Seite steht hier, damit ihr widersprochen wird. Wenn Sie ein Haus leiten, dort
+    arbeiten oder es als Angehörige von innen kennen: <strong>jeder Einwand ist heute
+    nützlicher als später.</strong></p>
+    <p style="margin-top:16px">Schreiben Sie uns:
+      <a class="email" href="mailto:info@vigyazokrad.hu">info@vigyazokrad.hu</a></p>
+  </section>
+
+  <footer>
+    <p><a href="./">Zurück zur Startseite</a></p>
+    <p>Kürtösi Péter · Vigyázok Rád</p>
+  </footer>
+
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     ENGLISH
+     ══════════════════════════════════════════════════════════════════ -->
+<section class="nyelv" data-nyelv="en" lang="en">
+
+  <h1>For care homes</h1>
+  <p class="mondat">What we are building for a 15–25 room home — and what we deliberately are not.</p>
+
+  <p class="allapot">
+    <span><b>A PLAN.</b> This page describes a system being built, not a product you can
+    buy. It is public because two homes asked about it — and because disagreement now is
+    worth more than a late discovery. What actually runs today is set out under
+    <a href="#hol-tartunk-en">Where we are today</a>.</span>
+  </p>
+
+  <p class="cimke">Before anything else</p>
+  <section class="termek">
+    <h2>This is not a nurse call system</h2>
+
+    <div class="doboz fontos">
+      <p class="dcimke">Important — please read this first</p>
+      <p>A care home needs a <strong>proper, certified nurse call system</strong>.</p>
+      <p>We are saying this before we describe anything we build, because everything below
+      assumes it. <strong>Our system is designed to sit alongside a nurse call system, not
+      to replace one.</strong> It cannot be the only way of calling for help, and we would
+      not want it to be.</p>
+      <p>Certified systems are available off the shelf from established suppliers. We are
+      happy to help compare them and to make sure ours works neatly beside whichever is
+      chosen — but we will not build one, and we will not pretend that what we build is one.</p>
+    </div>
+
+    <p>We say this first because it is the most valuable sentence on this page, and because
+    it would be easy — and wrong — to leave it out. Everything after this point is about
+    what a certified nurse call system <em>doesn't</em> do.</p>
+  </section>
+
+  <p class="cimke">Who it is for</p>
+  <section class="termek">
+    <h2>The smaller homes</h2>
+    <p>This package is for <strong>privately run homes of 15–25 rooms</strong>. That is not
+    an accident.</p>
+    <p>The large institutional systems exist, they are good, and they are expensive. What a
+    home of a few dozen rooms usually gets offered is something it does not need, at a price
+    it cannot carry. So smaller homes often stay with what is barely anything at all: a
+    bell, a pull cord, a walkie-talkie.</p>
+    <p>Within a few weeks, <strong>two such homes</strong> asked about this. One cares for
+    people living with dementia; the other for older people who are cognitively well but can
+    no longer manage on their own. <strong>Two almost opposite problems, on the same
+    hardware</strong> — that is what the section “No two homes are alike” is about.</p>
+    <div class="doboz jo">
+      <p class="dcimke">Why this is more than an idea</p>
+      <p>One of the homes offered to <strong>help the development with advice and
+      experience</strong>. That is worth more than any specification we could invent on our
+      own: they know what happens in a corridor at three in the morning. We do not.</p>
+    </div>
+  </section>
+
+  <p class="cimke">What we propose to build</p>
+  <section class="termek">
+    <h2>Four parts, one system</h2>
+
+    <div class="tablaburok">
+    <table>
+      <tr><th>Where</th><th>What</th></tr>
+      <tr><td><strong>Every room</strong></td><td>A wall console with one large help button. Optionally a wearable or remote button, which is often easier for an older person than a panel on a wall.</td></tr>
+      <tr><td><strong>Every room</strong></td><td>A medication confirmation button, and the record behind it.</td></tr>
+      <tr><td><strong>At the nurse station</strong></td><td>A program on a large screen showing every room at once, with sound. At more than one station if needed.</td></tr>
+      <tr><td><strong>Somewhere in the building</strong></td><td>One small computer that holds the records. Nothing leaves the building.</td></tr>
+    </table>
+    </div>
+
+    <div class="doboz jo">
+      <p class="dcimke">A design decision worth knowing about</p>
+      <p>With more than one nurse station, <strong>no station can be the master.</strong>
+      The records live in one place — the small computer — and every station is a window
+      onto it. Otherwise the screens slowly disagree with each other, and nobody can tell
+      which one is right.</p>
+    </div>
+  </section>
+
+  <p class="cimke">The medication record</p>
+  <section class="termek">
+    <h2>Where the system is most useful — and most easily got wrong</h2>
+
+    <p>Every administration records four things: <strong>which resident</strong>,
+    <strong>which round</strong> (for example the 08:00 round), <strong>which member of
+    staff confirmed it</strong>, and <strong>the exact time the button was pressed</strong>.</p>
+
+    <h3>The wording matters more than it looks</h3>
+
+    <div class="doboz fontos">
+      <p class="dcimke">Important — what the system will and will not claim</p>
+      <p>The system will <strong>never</strong> display “medication taken”, because it does
+      not know that. It knows that somebody pressed a button.</p>
+      <p>So the screen says <strong>“confirmed at 08:12 by …”</strong>, or <strong>“not
+      confirmed”</strong>. The first is a statement about our own record and is always true.
+      The second kind of wording — a claim about what actually happened in the room — is the
+      kind that causes harm when it turns out to be wrong.</p>
+    </div>
+
+    <h3>Records are added to, never changed</h3>
+    <p>A medication record is <strong>append-only</strong>: entries are never edited and
+    never deleted. If something was recorded wrongly, a correction is <em>added</em>, and
+    both entries remain visible with their times. This is how clinical records work, and it
+    is the thing that makes a record worth having at all.</p>
+
+    <h3>How staff identify themselves</h3>
+    <p>Our recommendation is a <strong>tap fob</strong> — the same kind of token staff
+    already carry for doors. It takes two seconds, there is no password to forget or to
+    share, and it works with gloves on.</p>
+
+    <div class="doboz megjegyzes">
+      <p class="dcimke">Note — being honest about what a fob proves</p>
+      <p>A fob can be lent or left on a desk. So the record properly says <strong>“fob 7 was
+      tapped”</strong>, not “Nurse X was present”. In practice this is enough, and it is much
+      better than an illegible initial on paper — but it should be described accurately in a
+      home's own procedures.</p>
+    </div>
+
+    <h3>Two practical matters</h3>
+    <ul>
+      <li><span><strong>The clock.</strong> A timestamp is worth nothing if the clock is
+      wrong. The system keeps its time synchronised automatically, and the record shows when
+      the time was last verified.</span></li>
+      <li><span><strong>If the network is down.</strong> The console records locally and
+      sends it on when the network returns — and the record is <strong>marked as having
+      arrived late</strong>, so nobody has to guess.</span></li>
+    </ul>
+
+    <div class="doboz jo">
+      <p class="dcimke">This is for staff, not against them</p>
+      <p>Staff often expect a system like this to be about catching people out. In practice
+      the opposite is true: when something is questioned weeks later, a timed record is what
+      shows the round was done. <strong>Paper charts fail nurses far more often than they
+      fail managers.</strong></p>
+    </div>
+  </section>
+
+  <p class="cimke">What it does NOT do</p>
+  <section class="termek">
+    <h2>Better clear now than misunderstood later</h2>
+    <ul class="nemlista">
+      <li><span>It is <strong>not a nurse call system</strong> and must not be used as one.</span></li>
+      <li><span>It is <strong>not a medical device</strong>. It does not dispense, measure, diagnose or decide anything.</span></li>
+      <li><span>It does <strong>not replace the medication round</strong> or a nurse's judgement. It is a record and a reminder.</span></li>
+      <li><span>It does <strong>not watch residents</strong>. There are no cameras and no microphones.</span></li>
+      <li><span>It is <strong>not a life-safety system</strong>, and nobody should be told that it is.</span></li>
+    </ul>
+  </section>
+
+  <p class="cimke">The rule we build by</p>
+  <section class="termek">
+    <h2>Silence does not mean safety</h2>
+
+    <div class="doboz fontos">
+      <p class="dcimke">Important — a system people may rely on must prove it is alive</p>
+      <p>A certified nurse call system watches its own wiring: cut a cable and it raises an
+      alarm. Ours does the equivalent in software — <strong>every console reports in
+      continuously</strong>, and if one goes quiet the nurse station says so plainly, in
+      words, and out loud.</p>
+      <p><strong>Silence must never look like “everything is fine”.</strong> This is the
+      single most important rule in the whole design, and it is the reason we can offer the
+      system at all.</p>
+    </div>
+
+    <p>Related, and a standing rule in everything we build: <strong>colour is never the only
+    signal</strong>. Anything important is shown as text and shape as well as colour, so it
+    still reads correctly for someone who is colour-blind or looking at the screen from
+    across a corridor. This page is built the same way.</p>
+  </section>
+
+  <p class="cimke">No two homes are alike</p>
+  <section class="termek">
+    <h2>Two homes, two almost opposite problems</h2>
+
+    <p>This is the part where <strong>we need the homes' expertise far more than they need
+    ours</strong>, so please treat what follows as our opening assumptions rather than a
+    specification.</p>
+
+    <div class="doboz jo">
+      <p class="dcimke">The most important thing we think we understand</p>
+      <p>A person living with dementia often <strong>cannot call for help</strong> — not
+      because the button is out of reach, but because it does not occur to them that it
+      exists. So the valuable signal is frequently the <em>absence</em> of something: no
+      confirmation, no movement, a door opening at three in the morning.</p>
+      <p>That makes this a different product from “press the button and a nurse comes”, and
+      it is why we are interested in the project.</p>
+    </div>
+
+    <h3>Where people live with dementia</h3>
+    <ul>
+      <li><span><strong>The screen in the room shows as little as possible.</strong> One
+      button. No changing text, no status icons, no version numbers — a screen that changes
+      is a screen that causes distress. Everything diagnostic belongs at the nurse
+      station.</span></li>
+      <li><span><strong>Night matters.</strong> A screen must not light a bedroom. We would
+      default to fully dark at night with the button still working.</span></li>
+      <li><span><strong>The console must be reachable but not removable.</strong> Mounting
+      height and fixing are things to decide together, on site.</span></li>
+    </ul>
+
+    <h3>Where residents are cognitively well</h3>
+    <ul>
+      <li><span><strong>They want more, not less.</strong> The same console can show them
+      messages, appointments and reminders, and it carries an “I'm all right”
+      tile.</span></li>
+      <li><span><strong>Privacy weighs heavier here.</strong> Someone who thinks clearly has
+      a right to know what the system records about them — and a right to say no.</span></li>
+      <li><span><strong>Same hardware, different setting.</strong> This is the heart of the
+      design: not two products, but one that the home configures for itself.</span></li>
+    </ul>
+  </section>
+
+  <p class="cimke">The screen at the nurse station</p>
+  <section class="termek" id="kozpont-en">
+    <h2>Segítség Központ — only just started</h2>
+
+    <p>The other half of the system is the screen that sits on the desk. This is how much of
+    it exists today: a program that <strong>finds the house's consoles on the network by
+    itself</strong>, shows for each whether it is alive, how strong its signal is and which
+    version it is running — and <strong>updates them at the press of a button, with no
+    cable</strong>.</p>
+
+    <div class="doboz megjegyzes">
+      <p class="dcimke">Note — the version number is shown on purpose</p>
+      <p>The picture says <strong>0.0.1</strong>. This is the first working piece, not the
+      finished screen. It will do orders of magnitude more: every room as a tile, alarms
+      with sound, the state of the medication round, and the silent console said out loud.
+      We show it like this anyway, because it is what exists — and because showing something
+      half-built as half-built is more honest than presenting a mock-up as finished.</p>
+    </div>
+
+    <figure>
+      <img src="kep/kozpont-ket-konzol.jpg" width="1280" height="857" loading="lazy"
+           alt="A monitor running a program called Segítség Központ, version 0.0.1. Its header says it has found two consoles. Two cards side by side: “Iroda – 0001” and “Betegszoba – 0002”, each showing the network name, signal strength, uptime and the firmware version running on it, plus an update button. Log lines at the bottom show the program discovering both consoles. In front of the monitor stand the two real wall consoles: a purple screen with the room name at the top, two tiles — “I'm all right” and “Lights OFF” — and a large red HELP button at the bottom.">
+      <figcaption>The station program and the two consoles it can see. Nobody needs to make
+      out the small text on the screen: what it shows is also written in the paragraph
+      above.</figcaption>
+    </figure>
+
+    <h3>And what lies beyond it</h3>
+    <p>There is a much larger version of this same view, one that follows not a single house
+    but many at once, up to a national scale. Systems like that exist. But our experience so
+    far says the <strong>real gap is somewhere else</strong>: homes of 15–25 rooms have
+    nobody to turn to today. So we are starting with the local package.</p>
+  </section>
+
+  <p class="cimke">Where we are today</p>
+  <section class="termek" id="hol-tartunk-en">
+    <h2>Honestly about what is done and what is not</h2>
+
+    <h3>What runs today, and is measured</h3>
+    <ul>
+      <li><span>The wall console: a large <strong>HELP</strong> button, two tiles, its own network name.</span></li>
+      <li><span>The consoles speak to each other: the call appears in the other room, and the
+      <strong>“I'm coming!”</strong> reply gets back to whoever called. Measured with two
+      real panels: <strong>ten seconds</strong>.</span></li>
+      <li><span>Updates over the network, with no cable — and if an update were to go wrong,
+      the device <strong>returns by itself</strong> to the previous, working version.</span></li>
+      <li><span>The Segítség Központ at <strong>0.0.1</strong>: discovery and updating.</span></li>
+    </ul>
+
+    <h3>What is not there yet</h3>
+    <ul>
+      <li><span>The medication record and fob identification.</span></li>
+      <li><span>The full nurse station screen and the sound.</span></li>
+      <li><span>The small computer that holds the records.</span></li>
+      <li><span>Any installation in a real home. <strong>That has not happened yet.</strong></span></li>
+    </ul>
+
+    <div class="doboz fontos">
+      <p class="dcimke">Important — why one room will be first</p>
+      <p>When the first installation comes, it starts with <strong>a single room</strong>,
+      not fifteen. One room, a few weeks, and then questions — before a hole is drilled
+      anywhere else. Anyone promising faster is not thinking about the home.</p>
+    </div>
+  </section>
+
+  <p class="cimke">To take away</p>
+  <section class="termek">
+    <h2>A short version, two pages</h2>
+    <p>The same plan on one sheet, in a printable form — for showing on paper, or taking to
+    a meeting.</p>
+    <a class="gomb szeles" href="prospektus/vigyazokrad-otthonoknak-en.pdf" download
+       id="letoltes-en">Download the summary — PDF, 237 kB, 2 pages</a>
+  </section>
+
+  <section class="termek">
+    <h2>If you have a view on this</h2>
+    <p>This page is published so that people can argue with it. If you run a home, work in
+    one, or know one from the inside as a relative: <strong>every objection is more useful
+    now than later.</strong></p>
+    <p style="margin-top:16px">Write to us:
+      <a class="email" href="mailto:info@vigyazokrad.hu">info@vigyazokrad.hu</a></p>
+  </section>
+
+  <footer>
+    <p><a href="./">Back to the home page</a></p>
+    <p>Kürtösi Péter · Vigyázok Rád</p>
+  </footer>
+
+</section>
+
+</main>
+
+<script>
+/* ── NYELV ÉS BETŰMÉRET ───────────────────────────────────────────
+   ⭐ UGYANAZ A KÉT localStorage-KULCS, MINT A FŐOLDALON. Ugyanaz a domain,
+      tehát ugyanaz a tároló: aki a főoldalt németül nézte, ide is németül
+      érkezik, és a beállított betűméret is átjön.
+
+   ⚠ A `body.szures` osztályt a SZKRIPT teszi fel. Ha a szkript nem fut,
+     az osztály nem kerül fel, és MIND A HÁROM nyelv olvasható marad.
+     Ezért nem veszíthet semmit az, akinél a JavaScript tiltva van. */
+(function () {
+  var MERETEK = ['17px', '20px', '24px'];
+  var NYELVEK = ['hu', 'de', 'en'];
+
+  function biztosTarolas(fn, alap) {
+    /* A tároló privát ablakban vagy tiltott sütiknél DOBHAT — az oldal
+       akkor is működjön, csak nem emlékszik. */
+    try { return fn(); } catch (e) { return alap; }
+  }
+
+  function nyelvetAllit(kod) {
+    if (NYELVEK.indexOf(kod) < 0) return;
+    document.body.classList.add('szures');
+    document.documentElement.lang = kod;
+    document.querySelectorAll('.nyelv').forEach(function (sz) {
+      sz.classList.toggle('aktiv', sz.dataset.nyelv === kod);
+    });
+    document.querySelectorAll('.nyelvek button').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.nyelv === kod));
+    });
+    /* ⚠ A FŐOLDALRA VISSZAMUTATÓ LINK IS VIGYE A NYELVET. A főoldal a
+       `?nyelv=` paramétert olvassa — enélkül a német olvasó a magyar
+       főoldalra érkezne vissza. */
+    var v = document.getElementById('vissza-link');
+    if (v) v.href = './?nyelv=' + kod;
+    biztosTarolas(function () { return localStorage.setItem('vigyazokrad-nyelv', kod); });
+  }
+
+  function meretetAllit(index) {
+    document.documentElement.style.setProperty('--alap', MERETEK[index]);
+    document.querySelectorAll('.meret button').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(Number(b.dataset.meret) === index));
+    });
+    biztosTarolas(function () { return localStorage.setItem('vigyazokrad-meret', String(index)); });
+  }
+
+  document.querySelectorAll('.nyelvek button').forEach(function (b) {
+    b.addEventListener('click', function () { nyelvetAllit(b.dataset.nyelv); });
+  });
+  document.querySelectorAll('.meret button').forEach(function (b) {
+    b.addEventListener('click', function () { meretetAllit(Number(b.dataset.meret)); });
+  });
+
+  /* Sorrend: a címben kapott ?nyelv=…, aztán amit a látogató legutóbb
+     választott (a FŐOLDALON is), aztán a magyar. */
+  var urlNyelv = new URLSearchParams(location.search).get('nyelv');
+  var mentett  = biztosTarolas(function () { return localStorage.getItem('vigyazokrad-nyelv'); }, null);
+  nyelvetAllit(NYELVEK.indexOf(urlNyelv) >= 0 ? urlNyelv
+             : (NYELVEK.indexOf(mentett) >= 0 ? mentett : 'hu'));
+
+  var mentettMeret = biztosTarolas(function () { return localStorage.getItem('vigyazokrad-meret'); }, null);
+  meretetAllit(mentettMeret !== null && MERETEK[Number(mentettMeret)] ? Number(mentettMeret) : 1);
+})();
+</script>
+</body>
+</html>
